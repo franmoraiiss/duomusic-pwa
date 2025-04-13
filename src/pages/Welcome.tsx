@@ -35,7 +35,7 @@ const Welcome = () => {
             </HStack>
 
             <HStack>
-              <Button backgroundColor="green" width={80} onClick={() => navigate('/classes')}>Começar</Button>
+              <Button backgroundColor="green" width={80} onClick={() => navigate('/study-path')}>Começar</Button>
             </HStack>
           </VStack>
         </VStack>

@@ -6,6 +6,7 @@ import { Provider } from '@/components/ui/provider.tsx';
 
 import { Login } from './pages/Login.tsx'
 import { Welcome } from './pages/Welcome.tsx';
+import { StudyPath } from './pages/StudyPath.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -14,6 +15,7 @@ createRoot(document.getElementById('root')!).render(
         <Routes>
           <Route path='/' element={<Login />}/>
           <Route path='/welcome' element={<Welcome />}/>
+          <Route path='/study-path' element={<StudyPath />}/>
         </Routes>
       </BrowserRouter>
     </Provider>
