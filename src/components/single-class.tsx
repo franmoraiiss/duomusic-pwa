@@ -1,11 +1,11 @@
 import { Box, Image, Text } from "@chakra-ui/react"
 
-interface ClassProps {
+interface SingleClassProps {
   image: string;
   text: string;
 }
 
-const Class = ({ image, text }: ClassProps) => {
+export const SingleClass = ({ image, text }: SingleClassProps) => {
   return (
     <Box 
       backgroundColor="#FFFFFF" 
@@ -23,11 +23,3 @@ const Class = ({ image, text }: ClassProps) => {
     </Box>
   );
 }
-
-const ClassSeparator = () => {
-  return (
-    <Box minWidth="0.3rem" minHeight="4rem" backgroundColor="#9586A8" />
-  );
-}
-
-export { Class, ClassSeparator };

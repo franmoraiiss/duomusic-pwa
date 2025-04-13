@@ -1,6 +1,7 @@
 import { Box, Icon, Tabs, Text } from "@chakra-ui/react"
 import StudyPathImage from "@/assets/music-path01.png"
-import { Class, ClassSeparator } from "@/components/Class";
+import { SingleClass } from "@/components/single-class";
+import { ClassSeparator } from "@/components/class-separator";
 import { Grid2x2, User } from "lucide-react";
 
 const StudyPath = () => {
@@ -28,31 +29,31 @@ const StudyPath = () => {
             alignItems="center"
             padding="3rem"
           >
-            <Class
+            <SingleClass
               image={StudyPathImage}
               text="Teoria musical básica"
             />
             <ClassSeparator />
 
-            <Class
+            <SingleClass
               image={StudyPathImage}
               text="Teoria musical básica"
             />
             <ClassSeparator />
 
-            <Class
+            <SingleClass
               image={StudyPathImage}
               text="Teoria musical básica"
             />
             <ClassSeparator />
 
-            <Class
+            <SingleClass
               image={StudyPathImage}
               text="Teoria musical básica"
             />
             <ClassSeparator />
 
-            <Class
+            <SingleClass
               image={StudyPathImage}
               text="Teoria musical básica"
             />
