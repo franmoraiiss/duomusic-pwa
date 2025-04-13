@@ -19,7 +19,7 @@ const Welcome = () => {
         display="flex"
         flexDirection="column"
         alignItems="center"
-        height="50vh"
+        height="55vh"
         width="100vw"
         borderTopRadius="4xl"
         padding={12}
