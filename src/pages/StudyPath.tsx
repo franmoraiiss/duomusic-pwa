@@ -15,15 +15,14 @@ const StudyPath = () => {
       >
         <Tabs.Content 
           value="path"
-          overflow="auto"
-          maxHeight="90vh"
         >
           <Box paddingTop="3rem" paddingBottom="1rem" width="100%">
             <Text fontSize="2rem" fontWeight="bold" color="#2D0C57" textAlign="center">Trilha de estudo</Text>
           </Box>
-          <Box            
+          <Box
             width="100%"
-            height="100%"
+            maxHeight="75vh"
+            overflow="auto"
             display="flex"
             flexDirection="column"
             alignItems="center"
@@ -32,37 +31,56 @@ const StudyPath = () => {
             <SingleClass
               image={StudyPathImage}
               text="Teoria musical básica"
+              classPath="/basic-music-theory"
             />
             <ClassSeparator />
 
             <SingleClass
               image={StudyPathImage}
               text="Teoria musical básica"
+              classPath="/basic-music-theory"
             />
             <ClassSeparator />
 
             <SingleClass
               image={StudyPathImage}
               text="Teoria musical básica"
+              classPath="/basic-music-theory"
             />
             <ClassSeparator />
 
             <SingleClass
               image={StudyPathImage}
               text="Teoria musical básica"
+              classPath="/basic-music-theory"
             />
             <ClassSeparator />
 
             <SingleClass
               image={StudyPathImage}
               text="Teoria musical básica"
+              classPath="/404"
             />
+
+            <Box marginTop="3rem">
+              <SingleClass
+                image={StudyPathImage}
+                text="Afinador"
+                classPath="/404"
+              />
+            </Box>
+
+            <Box marginTop="3rem">
+              <SingleClass
+                image={StudyPathImage}
+                text="Piano Playground"
+                classPath="/piano-playground"
+              />
+            </Box>
           </Box>
         </Tabs.Content>
         <Tabs.Content 
-          value="profile" 
-          overflow="auto"
-          height="90vh"
+          value="profile"
         >
           Profile
         </Tabs.Content>
@@ -70,13 +88,16 @@ const StudyPath = () => {
       <Box 
         backgroundColor="#FFFFFF"
         width="100%" 
-        height="10vh"
+        height="5rem"
         borderColor="#D9D0E3"
         borderWidth="1px"
         boxShadow="0px 5px 15px 5px rgba(0, 0, 0, .2)"
         display="flex" 
         flexDirection="row" 
         alignItems="center" 
+        position="fixed"
+        bottom="0"
+        zIndex="1000"
       >
         <Tabs.List 
           width="100%"
