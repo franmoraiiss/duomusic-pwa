@@ -9,6 +9,7 @@ import { Welcome } from './pages/Welcome.tsx';
 import { StudyPath } from './pages/StudyPath.tsx';
 import { BasicMusicTheory } from './pages/StudyPaths/BasicMusicTheory.tsx';
 import { PianoPlayground } from './pages/PianoPlayground.tsx';
+import { Tuner } from './pages/Tuner.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -20,6 +21,7 @@ createRoot(document.getElementById('root')!).render(
           <Route path='/study-path' element={<StudyPath />}/>
           <Route path='/basic-music-theory' element={<BasicMusicTheory />}/>
           <Route path='/piano-playground' element={<PianoPlayground />}/>
+          <Route path='/tuner' element={<Tuner />}/>
         </Routes>
       </BrowserRouter>
     </Provider>

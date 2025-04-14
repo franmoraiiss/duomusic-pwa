@@ -1,23 +1,36 @@
 import { useEffect, useState } from 'react';
 
-const OrientationWarning = () => {
-  const [isPortrait, setIsPortrait] = useState(window.matchMedia('(orientation: portrait)').matches);
+interface OrientationWarningProps {
+  requiredOrientation: 'landscape' | 'portrait';
+}
+
+const OrientationWarning = ({ requiredOrientation = 'landscape' }: OrientationWarningProps) => {
+  const [isMismatched, setIsMismatched] = useState(false);
 
   useEffect(() => {
-    const handleOrientationChange = () => {
-      setIsPortrait(window.matchMedia('(orientation: portrait)').matches);
+    const checkOrientation = () => {
+      const isPortrait = window.matchMedia('(orientation: portrait)').matches;
+      const isLandscape = window.matchMedia('(orientation: landscape)').matches;
+
+      const mismatched =
+        (requiredOrientation === 'portrait' && !isPortrait) ||
+        (requiredOrientation === 'landscape' && !isLandscape);
+
+      setIsMismatched(mismatched);
     };
 
-    window.addEventListener('resize', handleOrientationChange);
-    window.addEventListener('orientationchange', handleOrientationChange);
+    checkOrientation();
+
+    window.addEventListener('resize', checkOrientation);
+    window.addEventListener('orientationchange', checkOrientation);
 
     return () => {
-      window.removeEventListener('resize', handleOrientationChange);
-      window.removeEventListener('orientationchange', handleOrientationChange);
+      window.removeEventListener('resize', checkOrientation);
+      window.removeEventListener('orientationchange', checkOrientation);
     };
-  }, []);
+  }, [requiredOrientation]);
 
-  if (!isPortrait) return null;
+  if (!isMismatched) return null;
 
   return (
     <div style={{
@@ -32,7 +45,9 @@ const OrientationWarning = () => {
       textAlign: 'center',
       padding: '1rem',
     }}>
-      <p>Por favor, rotacione o dipositivo para acessar o playground do piano.</p>
+      <p>
+        Please rotate your device to <strong>{requiredOrientation}</strong> mode to continue using this app.
+      </p>
     </div>
   );
 };
