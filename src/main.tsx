@@ -7,9 +7,17 @@ import { Provider } from '@/components/ui/provider.tsx';
 import { Login } from './pages/Login.tsx'
 import { Welcome } from './pages/Welcome.tsx';
 import { StudyPath } from './pages/StudyPath.tsx';
-import { BasicMusicTheory } from './pages/StudyPaths/BasicMusicTheory.tsx';
 import { PianoPlayground } from './pages/PianoPlayground.tsx';
 import { Tuner } from './pages/Tuner.tsx';
+
+// Basic Theory
+import { BasicMusicTheory } from './pages/StudyPaths/BasicMusicTheory/BasicMusicTheory.tsx';
+import { B1 } from './pages/StudyPaths/BasicMusicTheory/B1.tsx';
+import { B2 } from './pages/StudyPaths/BasicMusicTheory/B2.tsx';
+import { B3 } from './pages/StudyPaths/BasicMusicTheory/B3.tsx';
+import { B4 } from './pages/StudyPaths/BasicMusicTheory/B4.tsx';
+import { BTest } from './pages/StudyPaths/BasicMusicTheory/BTest.tsx';
+import { EarTraining } from './pages/StudyPaths/EarTraining/EarTraining.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -19,9 +27,17 @@ createRoot(document.getElementById('root')!).render(
           <Route path='/' element={<Login />}/>
           <Route path='/welcome' element={<Welcome />}/>
           <Route path='/study-path' element={<StudyPath />}/>
-          <Route path='/basic-music-theory' element={<BasicMusicTheory />}/>
           <Route path='/piano-playground' element={<PianoPlayground />}/>
           <Route path='/tuner' element={<Tuner />}/>
+
+          <Route path='/basic-music-theory' element={<BasicMusicTheory />}/>
+          <Route path='/basic-music-theory/01' element={<B1 />} />
+          <Route path='/basic-music-theory/02' element={<B2 />} />
+          <Route path='/basic-music-theory/03' element={<B3 />} />
+          <Route path='/basic-music-theory/04' element={<B4 />} />
+          <Route path='/basic-music-theory/test' element={<BTest />} />
+
+          <Route path='/ear-training' element={<EarTraining />} />
         </Routes>
       </BrowserRouter>
     </Provider>

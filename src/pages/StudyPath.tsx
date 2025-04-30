@@ -1,5 +1,9 @@
-import { Box, Icon, Tabs, Text } from "@chakra-ui/react"
+import { Box, Icon, Progress, Tabs, Text } from "@chakra-ui/react"
 import StudyPathImage from "@/assets/music-path01.png"
+import EarImage from "@/assets/ouvido.jpg"
+import Chords from "@/assets/acordes.jpeg"
+import Diapason from "@/assets/diapason.jpg"
+import PianoPlaygroundImage from "@/assets/piano-playground.jpg"
 import { SingleClass } from "@/components/single-class";
 import { ClassSeparator } from "@/components/class-separator";
 import { Grid2x2, User } from "lucide-react";
@@ -39,22 +43,15 @@ const StudyPath = () => {
               <ClassSeparator />
 
               <SingleClass
-                image={StudyPathImage}
-                text="Teoria musical básica"
+                image={Chords}
+                text="Aprendendo acordes"
                 classPath="/basic-music-theory"
               />
               <ClassSeparator />
 
               <SingleClass
-                image={StudyPathImage}
-                text="Teoria musical básica"
-                classPath="/basic-music-theory"
-              />
-              <ClassSeparator />
-
-              <SingleClass
-                image={StudyPathImage}
-                text="Teoria musical básica"
+                image={EarImage}
+                text="Treinando seu ouvido"
                 classPath="/basic-music-theory"
               />
               <ClassSeparator />
@@ -67,7 +64,7 @@ const StudyPath = () => {
 
               <Box marginTop="3rem">
                 <SingleClass
-                  image={StudyPathImage}
+                  image={Diapason}
                   text="Afinador"
                   classPath="/tuner"
                 />
@@ -75,7 +72,7 @@ const StudyPath = () => {
 
               <Box marginTop="3rem">
                 <SingleClass
-                  image={StudyPathImage}
+                  image={PianoPlaygroundImage}
                   text="Piano Playground"
                   classPath="/piano-playground"
                 />
@@ -85,7 +82,51 @@ const StudyPath = () => {
           <Tabs.Content 
             value="profile"
           >
-            Profile
+            <Box 
+              backgroundColor="#F6F5F5"
+              height="100vh"
+              paddingX="2rem"
+            >
+              <Box paddingY="2rem">
+                <Text fontSize="2rem">Olá, Francisco!</Text>
+                <Text>Aqui você pode acompanhar seu progresso</Text>
+              </Box>
+
+              <Box paddingY="1rem">
+                <Text>Exercícios realizados</Text>
+                <Progress.Root value={50} size="xs" colorPalette="green">
+                  <Progress.Track>
+                    <Progress.Range />
+                  </Progress.Track>
+                  <Progress.ValueText>50% (5 de 10)</Progress.ValueText>
+                </Progress.Root>
+              </Box>
+
+              <Box paddingY="1rem">
+                <Text>Aulas concluídas</Text>
+                <Progress.Root value={20} size="xs" colorPalette="green">
+                  <Progress.Track>
+                    <Progress.Range />
+                  </Progress.Track>
+                  <Progress.ValueText>20% (1 de 4)</Progress.ValueText>
+                </Progress.Root>
+              </Box>
+
+              <Box paddingY="1rem">
+                <Text>Seu streak atual:</Text>
+                <Text fontWeight="light" textAlign="center" fontSize="2.5rem" paddingY="1rem">5 dias 🔥</Text>
+                <Text fontWeight="light" fontSize="0.75rem">Parabéns, continue estudando para aumentar seu streak.</Text>
+              </Box>
+
+              <Box paddingY="1rem">
+                <Text>Ranking semanal:</Text>
+                <Text fontWeight="light" fontSize="1">1. Francisco (5 🔥)</Text>
+                <Text fontWeight="light" fontSize="1">2. User (1 🔥)</Text>
+                <Text fontWeight="light" fontSize="1">3. User (1 🔥)</Text>
+                <Text fontWeight="light" fontSize="1">4. User (1 🔥)</Text>
+                <Text fontWeight="light" fontSize="1">5. User (1 🔥)</Text>
+              </Box>
+            </Box>
           </Tabs.Content>
         </Box>
         <Box 
