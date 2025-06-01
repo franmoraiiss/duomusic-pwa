@@ -3,7 +3,7 @@ import { ChevronLeft } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 
-const B4 = () => {
+const C1 = () => {
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
 
@@ -11,8 +11,8 @@ const B4 = () => {
 
   const markAsCompleted = () => {
     const completed = JSON.parse(localStorage.getItem('completedLessons') || '[]');
-    if (!completed.includes('b4')) {
-      completed.push('b4');
+    if (!completed.includes('c1')) {
+      completed.push('c1');
       localStorage.setItem('completedLessons', JSON.stringify(completed));
     }
     navigate(-1);
@@ -33,7 +33,7 @@ const B4 = () => {
         </Icon>
       </Box>
       <Box paddingY="4rem" width="100%" boxShadow="0px 5px 5px -2px rgba(0, 0, 0, .1)">
-        <Text fontSize="2rem" fontWeight="bold" color="#2D0C57" textAlign="center">Aula 04: Timbre</Text>
+        <Text fontSize="2rem" fontWeight="bold" color="#2D0C57" textAlign="center">Aula 01: O que são acordes?</Text>
       </Box>
       <Progress.Root value={(100*page)/totalPages} size="xs" colorPalette="green">
         <Progress.Track>
@@ -45,14 +45,11 @@ const B4 = () => {
         {page === 1 && (
           <Box display="flex" flexDirection="column" justifyContent="space-between" alignItems="space-between" height="100%">
             <Box> 
-              <Text fontWeight="bold" textAlign="center" fontSize="1.5rem" paddingY="1.5rem">O que é Timbre?</Text>
+              <Text fontWeight="bold" textAlign="center" fontSize="1.5rem" paddingY="1.5rem">O que são acordes?</Text>
               <Text textAlign="justify" fontSize="1.25rem" paddingX="2rem">
-              Timbre é o que torna um som único, mesmo que a nota seja a mesma.
-              <br/>
-              <br/>
-                Por exemplo:
-                Um Dó tocado no piano soa diferente de um Dó cantado por uma pessoa.
-                Um violão tem um timbre diferente de um saxofone.
+                Um acorde é um conjunto de três ou mais notas tocadas simultaneamente. É como se você estivesse empilhando notas uma em cima da outra para criar um som mais rico e harmonioso.
+                <br/><br/>
+                Por exemplo, quando você toca as notas Dó, Mi e Sol juntas, você está tocando o acorde de Dó maior.
               </Text>
             </Box>
             <Box display="flex" justifyContent="center" padding="3rem">
@@ -64,16 +61,21 @@ const B4 = () => {
         {page === 2 && (
           <Box display="flex" flexDirection="column" justifyContent="space-between" alignItems="space-between" height="100%">
             <Box> 
-              <Text fontWeight="bold" textAlign="center" fontSize="1.5rem" paddingY="1.5rem">Timbre</Text>
-              <Text textAlign="justify" fontSize="1rem" paddingX="2rem">
-                Timbre é a identidade do som, como se fosse a "voz" de cada instrumento.<br/><br/>
-                No piano, você também pode ouvir diferenças de timbre dependendo da maneira como toca:<br/>
-                Toques mais suaves podem soar mais "aveludados".<br/>
-                Toques mais fortes podem soar mais "brilhantes" ou "agressivos".<br/>
+              <Text fontWeight="bold" textAlign="center" fontSize="1.5rem" paddingY="1.5rem">Por que usar acordes?</Text>
+              <Text textAlign="justify" fontSize="1.25rem" paddingX="2rem">
+                Os acordes são fundamentais na música porque:
+                <br/><br/>
+                1. Criam harmonia e profundidade
+                <br/>
+                2. Dão suporte à melodia
+                <br/>
+                3. Estabelecem o clima da música
+                <br/>
+                4. São a base para acompanhamento
               </Text>
             </Box>
             <Box display="flex" justifyContent="center" padding="3rem">
-              <Button backgroundColor="#0BCE83" paddingX="3rem" onClick={markAsCompleted}>Voltar</Button>
+              <Button backgroundColor="#0BCE83" paddingX="3rem" onClick={() => setPage(page + 1)}>Continuar</Button>
             </Box>
           </Box>
         )}
@@ -81,20 +83,27 @@ const B4 = () => {
         {page === 3 && (
           <Box display="flex" flexDirection="column" justifyContent="space-between" alignItems="space-between" height="100%">
             <Box> 
-              <Text fontWeight="bold" textAlign="center" fontSize="1.5rem" paddingY="1.5rem">Timbre</Text>
-              <Text textAlign="justify" fontSize="1rem" paddingX="2rem">
-                Por que o Timbre é importante?<br/><br/>
-                Ele traz emoção e variedade à música! Um bom músico sabe explorar diferentes timbres para tornar a execução mais interessante e expressiva.
+              <Text fontWeight="bold" textAlign="center" fontSize="1.5rem" paddingY="1.5rem">Estrutura básica</Text>
+              <Text textAlign="justify" fontSize="1.25rem" paddingX="2rem">
+                A forma mais básica de um acorde é a tríade, que consiste em três notas:
+                <br/><br/>
+                1. Nota fundamental (base do acorde)
+                <br/>
+                2. Terça (3ª nota acima da fundamental)
+                <br/>
+                3. Quinta (5ª nota acima da fundamental)
+                <br/><br/>
+                Na próxima aula, veremos como essas notas se combinam para formar acordes maiores e menores!
               </Text>
             </Box>
             <Box display="flex" justifyContent="center" padding="3rem">
-              <Button backgroundColor="#0BCE83" paddingX="3rem" onClick={markAsCompleted}>Voltar</Button>
+              <Button backgroundColor="#0BCE83" paddingX="3rem" onClick={markAsCompleted}>Concluir</Button>
             </Box>
           </Box>
         )}
       </Box>
     </Box>
   );
-}
+};
 
-export { B4 };
+export { C1 }; 

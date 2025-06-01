@@ -1,14 +1,25 @@
-import { Box, Image, Text } from "@chakra-ui/react"
+import { Box, Image, Text, Icon } from "@chakra-ui/react"
 import { useNavigate } from "react-router";
+import { Lock } from "lucide-react";
 
 interface SingleClassProps {
   image: string;
   text: string;
   classPath: string;
+  moduleId?: string;
+  isLocked?: boolean;
 }
 
-export const SingleClass = ({ image, text, classPath }: SingleClassProps) => {
+export const SingleClass = ({ image, text, classPath, moduleId, isLocked = false }: SingleClassProps) => {
   const navigate = useNavigate();
+
+  console.log(moduleId);
+
+  const handleClick = () => {
+    if (!isLocked) {
+      navigate(classPath);
+    }
+  };
 
   return (
     <Box 
@@ -19,12 +30,30 @@ export const SingleClass = ({ image, text, classPath }: SingleClassProps) => {
       borderColor="#D9D0E3" 
       borderWidth="1px"
       boxShadow="0px 5px 5px -2px rgba(0, 0, 0, .1)"
-      onClick={() => navigate(classPath)}
+      onClick={handleClick}
+      cursor={isLocked ? "not-allowed" : "pointer"}
+      opacity={isLocked ? 0.5 : 1}
+      position="relative"
     >
       <Image borderTopRadius="2xl" src={image} width="14rem" height="9rem" objectFit="cover" />
       <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" height="5rem" paddingX="2.5rem">
         <Text fontWeight="bold" fontSize="1.2rem">{text}</Text>
       </Box>
+      {isLocked && (
+        <Box 
+          position="absolute" 
+          top="50%" 
+          left="50%" 
+          transform="translate(-50%, -50%)"
+          backgroundColor="rgba(0, 0, 0, 0.5)"
+          borderRadius="full"
+          padding="1rem"
+        >
+          <Icon color="white" boxSize="2rem">
+            <Lock />
+          </Icon>
+        </Box>
+      )}
     </Box>
   );
 }

@@ -3,7 +3,7 @@ import { ChevronLeft, Check, Lock } from "lucide-react";
 import { useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 
-const BasicMusicTheory = () => {
+const Chords = () => {
   const navigate = useNavigate();
   const [completedLessons, setCompletedLessons] = useState<string[]>([]);
 
@@ -20,17 +20,20 @@ const BasicMusicTheory = () => {
   };
 
   const isLessonLocked = (lessonId: string) => {
+    // First verify if basic theory is completed
+    if (!completedLessons.includes('btest')) {
+      return true;
+    }
+
     switch (lessonId) {
-      case 'b1':
+      case 'c1':
         return false; // First lesson is always unlocked
-      case 'b2':
-        return !isLessonCompleted('b1');
-      case 'b3':
-        return !isLessonCompleted('b2');
-      case 'b4':
-        return !isLessonCompleted('b3');
-      case 'btest':
-        return !isLessonCompleted('b4');
+      case 'c2':
+        return !isLessonCompleted('c1');
+      case 'c3':
+        return !isLessonCompleted('c2');
+      case 'ctest':
+        return !isLessonCompleted('c3');
       default:
         return false;
     }
@@ -57,7 +60,7 @@ const BasicMusicTheory = () => {
         </Icon>
       </Box>
       <Box paddingY="4rem" width="100%" boxShadow="0px 5px 5px -2px rgba(0, 0, 0, .1)">
-        <Text fontSize="2rem" fontWeight="bold" color="#2D0C57" textAlign="center">Teoria musical básica</Text>
+        <Text fontSize="2rem" fontWeight="bold" color="#2D0C57" textAlign="center">Aprendendo acordes</Text>
       </Box>
       <Box marginTop="3rem">
         <Box
@@ -67,40 +70,19 @@ const BasicMusicTheory = () => {
           borderWidth="1px"
           padding="1rem"
           marginBottom="1rem"
-          onClick={() => handleLessonClick('/basic-music-theory/01', 'b1')}
+          onClick={() => handleLessonClick('/chords/01', 'c1')}
           display="flex"
           justifyContent="space-between"
           alignItems="center"
-          cursor="pointer"
-          opacity={1}
+          cursor={isLessonLocked('c1') ? 'not-allowed' : 'pointer'}
+          opacity={isLessonLocked('c1') ? 0.5 : 1}
         >
-          <Text color="#2D0C57" fontWeight="bold">Aula 1: Introdução</Text>
-          {isLessonCompleted('b1') && (
+          <Text color="#2D0C57" fontWeight="bold">Aula 1: O que são acordes?</Text>
+          {isLessonCompleted('c1') ? (
             <Icon color="#0BCE83">
               <Check />
             </Icon>
-          )}
-        </Box>
-        <Box
-          width="100%"
-          backgroundColor="#FFFFFF"
-          borderColor="#D9D0E3"
-          borderWidth="1px"
-          padding="1rem"
-          marginBottom="1rem"
-          onClick={() => handleLessonClick('/basic-music-theory/02', 'b2')}
-          display="flex"
-          justifyContent="space-between"
-          alignItems="center"
-          cursor={isLessonLocked('b2') ? 'not-allowed' : 'pointer'}
-          opacity={isLessonLocked('b2') ? 0.5 : 1}
-        >
-          <Text color="#2D0C57" fontWeight="bold">Aula 2: Ritmo</Text>
-          {isLessonCompleted('b2') ? (
-            <Icon color="#0BCE83">
-              <Check />
-            </Icon>
-          ) : isLessonLocked('b2') && (
+          ) : isLessonLocked('c1') && (
             <Icon color="#2D0C57">
               <Lock />
             </Icon>
@@ -113,19 +95,19 @@ const BasicMusicTheory = () => {
           borderWidth="1px"
           padding="1rem"
           marginBottom="1rem"
-          onClick={() => handleLessonClick('/basic-music-theory/03', 'b3')}
+          onClick={() => handleLessonClick('/chords/02', 'c2')}
           display="flex"
           justifyContent="space-between"
           alignItems="center"
-          cursor={isLessonLocked('b3') ? 'not-allowed' : 'pointer'}
-          opacity={isLessonLocked('b3') ? 0.5 : 1}
+          cursor={isLessonLocked('c2') ? 'not-allowed' : 'pointer'}
+          opacity={isLessonLocked('c2') ? 0.5 : 1}
         >
-          <Text color="#2D0C57" fontWeight="bold">Aula 3: Intensidade</Text>
-          {isLessonCompleted('b3') ? (
+          <Text color="#2D0C57" fontWeight="bold">Aula 2: Acordes maiores e menores</Text>
+          {isLessonCompleted('c2') ? (
             <Icon color="#0BCE83">
               <Check />
             </Icon>
-          ) : isLessonLocked('b3') && (
+          ) : isLessonLocked('c2') && (
             <Icon color="#2D0C57">
               <Lock />
             </Icon>
@@ -138,19 +120,19 @@ const BasicMusicTheory = () => {
           borderWidth="1px"
           padding="1rem"
           marginBottom="1rem"
-          onClick={() => handleLessonClick('/basic-music-theory/04', 'b4')}
+          onClick={() => handleLessonClick('/chords/03', 'c3')}
           display="flex"
           justifyContent="space-between"
           alignItems="center"
-          cursor={isLessonLocked('b4') ? 'not-allowed' : 'pointer'}
-          opacity={isLessonLocked('b4') ? 0.5 : 1}
+          cursor={isLessonLocked('c3') ? 'not-allowed' : 'pointer'}
+          opacity={isLessonLocked('c3') ? 0.5 : 1}
         >
-          <Text color="#2D0C57" fontWeight="bold">Aula 4: Timbre</Text>
-          {isLessonCompleted('b4') ? (
+          <Text color="#2D0C57" fontWeight="bold">Aula 3: Progressões básicas</Text>
+          {isLessonCompleted('c3') ? (
             <Icon color="#0BCE83">
               <Check />
             </Icon>
-          ) : isLessonLocked('b4') && (
+          ) : isLessonLocked('c3') && (
             <Icon color="#2D0C57">
               <Lock />
             </Icon>
@@ -163,19 +145,19 @@ const BasicMusicTheory = () => {
           borderWidth="1px"
           padding="1rem"
           marginBottom="1rem"
-          onClick={() => handleLessonClick('/basic-music-theory/test', 'btest')}
+          onClick={() => handleLessonClick('/chords/test', 'ctest')}
           display="flex"
           justifyContent="space-between"
           alignItems="center"
-          cursor={isLessonLocked('btest') ? 'not-allowed' : 'pointer'}
-          opacity={isLessonLocked('btest') ? 0.5 : 1}
+          cursor={isLessonLocked('ctest') ? 'not-allowed' : 'pointer'}
+          opacity={isLessonLocked('ctest') ? 0.5 : 1}
         >
           <Text color="#2D0C57" fontWeight="bold">Exercícios</Text>
-          {isLessonCompleted('btest') ? (
+          {isLessonCompleted('ctest') ? (
             <Icon color="#0BCE83">
               <Check />
             </Icon>
-          ) : isLessonLocked('btest') && (
+          ) : isLessonLocked('ctest') && (
             <Icon color="#2D0C57">
               <Lock />
             </Icon>
@@ -183,7 +165,7 @@ const BasicMusicTheory = () => {
         </Box>
       </Box>
     </Box>
-  )
-}
+  );
+};
 
-export { BasicMusicTheory }
+export { Chords }; 

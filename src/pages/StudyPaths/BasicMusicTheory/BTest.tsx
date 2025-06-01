@@ -39,13 +39,28 @@ const BTest = () => {
 
   const handleAnswer = (index: number) => {
     setSelectedOption(index);
-    setIsCorrect(index === currentQuestion.correctIndex);
+    const correct = index === currentQuestion.correctIndex;
+    setIsCorrect(correct);
   }
+
+  const tryAgain = () => {
+    setSelectedOption(null);
+    setIsCorrect(null);
+  };
 
   const nextQuestion = () => {
     setCurrentQuestionIndex(prev => prev + 1);
     setSelectedOption(null);
     setIsCorrect(null);
+  };
+
+  const markAsCompleted = () => {
+    const completed = JSON.parse(localStorage.getItem('completedLessons') || '[]');
+    if (!completed.includes('btest')) {
+      completed.push('btest');
+      localStorage.setItem('completedLessons', JSON.stringify(completed));
+    }
+    navigate(-1);
   };
 
   return (
@@ -95,23 +110,66 @@ const BTest = () => {
             <Box> 
               <Text textAlign="center" fontSize="1.5rem" padding="1.5rem">{currentQuestion.question}</Text>
                 {currentQuestion.options.map((option, index) => (
-                  <Box width="100%" paddingX="2rem" paddingY="0.5rem">
+                  <Box width="100%" paddingX="2rem" paddingY="0.5rem" key={index}>
                       <Button
-                        key={index}
                         onClick={() => handleAnswer(index)}
                         width="100%"                        
                         disabled={selectedOption !== null}
+                        backgroundColor={
+                          selectedOption === index 
+                            ? isCorrect 
+                              ? "#0BCE83" 
+                              : "#FF6B6B"
+                            : "white"
+                        }
+                        color={selectedOption === index ? "white" : "black"}
                       >
                         {option}
                       </Button>
                   </Box>
                 ))}
             </Box>
-            {isCorrect && currentQuestionIndex < questions.length - 1 && (
+            {isCorrect !== null && (
               <Box display="flex" flexDirection="column" justifyContent="center" padding="3rem">
-                <Text fontSize="1.5rem" textAlign="center">Resposta correta!</Text>
-                <Text fontSize="8rem" textAlign="center">🥳</Text>
-                <Button backgroundColor="#0BCE83" paddingX="3rem" onClick={nextQuestion}>Próxima questão</Button>
+                {isCorrect ? (
+                  <>
+                    <Text fontSize="1.5rem" textAlign="center">Resposta correta!</Text>
+                    <Text fontSize="8rem" textAlign="center">🥳</Text>
+                    {currentQuestionIndex < questions.length - 1 ? (
+                      <Button backgroundColor="#0BCE83" paddingX="3rem" onClick={nextQuestion}>
+                        Próxima questão
+                      </Button>
+                    ) : (
+                      <>
+                        <Text fontSize="1.5rem" textAlign="center" marginY="1rem">
+                          Parabéns! Você completou o teste de teoria musical básica!
+                        </Text>
+                        <Button 
+                          backgroundColor="#0BCE83" 
+                          paddingX="3rem" 
+                          onClick={markAsCompleted}
+                        >
+                          Voltar ao início
+                        </Button>
+                      </>
+                    )}
+                  </>
+                ) : (
+                  <>
+                    <Text fontSize="1.5rem" textAlign="center">
+                      Ops! Essa não é a resposta correta.
+                    </Text>
+                    <Text fontSize="8rem" textAlign="center">😢</Text>
+                    <Button 
+                      backgroundColor="#FF6B6B" 
+                      color="white"
+                      paddingX="3rem" 
+                      onClick={tryAgain}
+                    >
+                      Tentar novamente
+                    </Button>
+                  </>
+                )}
               </Box>
             )}
           </Box>

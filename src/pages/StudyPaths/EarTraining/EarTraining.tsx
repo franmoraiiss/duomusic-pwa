@@ -34,6 +34,7 @@ const EarTraining = () => {
           <ChevronLeft />
         </Icon>
       </Box>
+      <OrientationWarning requiredOrientation="landscape" />
       <Box
         display="flex"
         maxWidth="100vw"

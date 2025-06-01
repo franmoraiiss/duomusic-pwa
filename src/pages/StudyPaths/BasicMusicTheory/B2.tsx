@@ -9,6 +9,15 @@ const B2 = () => {
 
   const totalPages = 3;
 
+  const markAsCompleted = () => {
+    const completed = JSON.parse(localStorage.getItem('completedLessons') || '[]');
+    if (!completed.includes('b2')) {
+      completed.push('b2');
+      localStorage.setItem('completedLessons', JSON.stringify(completed));
+    }
+    navigate(-1);
+  };
+
   return (
     <Box 
       backgroundColor="#F6F5F5"
@@ -46,7 +55,7 @@ const B2 = () => {
 
                 Outras são mais curtas (como uma nota rápida de meio tempo)
 
-                Essas durações criam padrões rítmicos, como o da música “Parabéns pra Você” — que todo mundo reconhece só pelo ritmo!
+                Essas durações criam padrões rítmicos, como o da música "Parabéns pra Você" — que todo mundo reconhece só pelo ritmo!
               </Text>
             </Box>
             <Box display="flex" justifyContent="center" padding="3rem">
@@ -90,7 +99,7 @@ const B2 = () => {
               </Text>
             </Box>
             <Box display="flex" justifyContent="center" padding="3rem">
-              <Button backgroundColor="#0BCE83" paddingX="3rem" onClick={() => navigate(-1)}>Voltar</Button>
+              <Button backgroundColor="#0BCE83" paddingX="3rem" onClick={markAsCompleted}>Voltar</Button>
             </Box>
           </Box>
         )}

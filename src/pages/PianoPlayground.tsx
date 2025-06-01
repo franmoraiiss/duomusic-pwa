@@ -5,14 +5,16 @@ import { Piano, MidiNumbers } from 'react-piano';
 import 'react-piano/dist/styles.css';
 import { ChevronLeft } from 'lucide-react';
 import { useNavigate } from 'react-router';
+import { useState } from 'react';
+import { midiNumberToNoteName } from '@/utils/note-utils';
 
 const audioContext = new window.AudioContext();
 const soundfontHostname = 'https://d1pzp51pvbm36p.cloudfront.net';
 
 interface PianoProps { 
   isLoading: boolean; 
-  playNote: number; 
-  stopNote: number; 
+  playNote: (midiNumber: number) => void; 
+  stopNote: (midiNumber: number) => void; 
 }
 
 const noteRange = {
@@ -22,6 +24,15 @@ const noteRange = {
 
 const PianoPlayground = () => {
   const navigate = useNavigate();
+  const [currentNote, setCurrentNote] = useState<string | null>(null);
+
+  const handlePlayNote = (midiNumber: number) => {
+    setCurrentNote(midiNumberToNoteName(midiNumber));
+  };
+
+  const handleStopNote = () => {
+    setCurrentNote(null);
+  };
 
   return (
     <>
@@ -43,14 +54,30 @@ const PianoPlayground = () => {
         alignItems="center"
         justifyContent="space-between"
       >
-        <Text 
-          marginTop="2rem" 
-          color="#2D0C57" 
-          fontWeight="bold" 
-          fontSize="1.5rem"
+        <Box
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          gap="1rem"
+          marginTop="2rem"
         >
-          Playground
-        </Text>
+          <Text 
+            color="#2D0C57" 
+            fontWeight="bold" 
+            fontSize="1.5rem"
+          >
+            Playground
+          </Text>
+          {currentNote && (
+            <Text
+              color="#2D0C57"
+              fontSize="2rem"
+              fontWeight="bold"
+            >
+              {currentNote}
+            </Text>
+          )}
+        </Box>
         <Box
           display="flex"
           width="100%"
@@ -63,8 +90,14 @@ const PianoPlayground = () => {
             render={({ isLoading, playNote, stopNote }: PianoProps) => (
               <Piano
                 noteRange={noteRange}
-                playNote={playNote}
-                stopNote={stopNote}
+                playNote={(midiNumber: number) => {
+                  playNote(midiNumber);
+                  handlePlayNote(midiNumber);
+                }}
+                stopNote={(midiNumber: number) => {
+                  stopNote(midiNumber);
+                  handleStopNote();
+                }}
                 disabled={isLoading}
               />
             )}

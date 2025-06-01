@@ -8,8 +8,32 @@ import { SingleClass } from "@/components/single-class";
 import { ClassSeparator } from "@/components/class-separator";
 import { Grid2x2, User } from "lucide-react";
 import { OrientationWarning } from "@/components/orientation-warning";
+import { useEffect, useState } from "react";
 
 const StudyPath = () => {
+  const [completedLessons, setCompletedLessons] = useState<string[]>([]);
+
+  useEffect(() => {
+    // Load completed lessons from localStorage
+    const completed = localStorage.getItem('completedLessons');
+    if (completed) {
+      setCompletedLessons(JSON.parse(completed));
+    }
+  }, []);
+
+  const isModuleUnlocked = (moduleId: string) => {
+    switch (moduleId) {
+      case 'basic-theory':
+        return true; // First module is always unlocked
+      case 'chords':
+        return completedLessons.includes('btest'); // Unlocked after completing basic theory test
+      case 'ear-training':
+        return completedLessons.includes('chords-test'); // Will be unlocked after completing chords module
+      default:
+        return true;
+    }
+  };
+
   return (
     <>
       <OrientationWarning requiredOrientation="portrait" />
@@ -39,27 +63,26 @@ const StudyPath = () => {
                 image={StudyPathImage}
                 text="Teoria musical básica"
                 classPath="/basic-music-theory"
+                moduleId="basic-theory"
+                isLocked={!isModuleUnlocked('basic-theory')}
               />
               <ClassSeparator />
 
               <SingleClass
                 image={Chords}
                 text="Aprendendo acordes"
-                classPath="/basic-music-theory"
+                classPath="/chords"
+                moduleId="chords"
+                isLocked={!isModuleUnlocked('chords')}
               />
               <ClassSeparator />
 
               <SingleClass
                 image={EarImage}
                 text="Treinando seu ouvido"
-                classPath="/basic-music-theory"
-              />
-              <ClassSeparator />
-
-              <SingleClass
-                image={StudyPathImage}
-                text="Teoria musical básica"
-                classPath="/404"
+                classPath="/ear-training"
+                moduleId="ear-training"
+                isLocked={!isModuleUnlocked('ear-training')}
               />
 
               <Box marginTop="3rem">
@@ -67,6 +90,8 @@ const StudyPath = () => {
                   image={Diapason}
                   text="Afinador"
                   classPath="/tuner"
+                  moduleId="tuner"
+                  isLocked={false}
                 />
               </Box>
 
@@ -75,6 +100,8 @@ const StudyPath = () => {
                   image={PianoPlaygroundImage}
                   text="Piano Playground"
                   classPath="/piano-playground"
+                  moduleId="piano"
+                  isLocked={false}
                 />
               </Box>
             </Box>

@@ -10,6 +10,15 @@ const B1 = () => {
 
   const totalPages = 3;
 
+  const markAsCompleted = () => {
+    const completed = JSON.parse(localStorage.getItem('completedLessons') || '[]');
+    if (!completed.includes('b1')) {
+      completed.push('b1');
+      localStorage.setItem('completedLessons', JSON.stringify(completed));
+    }
+    navigate(-1);
+  };
+
   return (
     <Box 
       backgroundColor="#F6F5F5"
@@ -73,7 +82,7 @@ const B1 = () => {
               <Image borderTopRadius="2xl" src={ClaveSol} marginTop="2rem" paddingX="2rem"/>
             </Box>
             <Box display="flex" justifyContent="center" padding="3rem">
-              <Button backgroundColor="#0BCE83" paddingX="3rem" onClick={() => navigate(-1)}>Voltar</Button>
+              <Button backgroundColor="#0BCE83" paddingX="3rem" onClick={markAsCompleted}>Voltar</Button>
             </Box>
           </Box>
         )}      
