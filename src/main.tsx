@@ -21,8 +21,41 @@ import { BTest } from './pages/StudyPaths/BasicMusicTheory/BTest.tsx';
 // Chords
 import { Chords } from './pages/StudyPaths/Chords/Chords.tsx';
 import { C1 } from './pages/StudyPaths/Chords/C1.tsx';
+import { C2 } from './pages/StudyPaths/Chords/C2.tsx';
+import { C3 } from './pages/StudyPaths/Chords/C3.tsx';
+import { C4 } from './pages/StudyPaths/Chords/C4.tsx';
+import { CTest } from './pages/StudyPaths/Chords/CTest.tsx';
 
+// Ear Training
 import { EarTraining } from './pages/StudyPaths/EarTraining/EarTraining.tsx';
+import { E1 } from './pages/StudyPaths/EarTraining/E1.tsx';
+import { E2 } from './pages/StudyPaths/EarTraining/E2.tsx';
+import { E3 } from './pages/StudyPaths/EarTraining/E3.tsx';
+import { E4 } from './pages/StudyPaths/EarTraining/E4.tsx';
+import { ETest } from './pages/StudyPaths/EarTraining/ETest.tsx';
+
+// Rhythm
+import { Rhythm } from './pages/StudyPaths/Rhythm/Rhythm.tsx';
+import { R1 } from './pages/StudyPaths/Rhythm/R1.tsx';
+import { R2 } from './pages/StudyPaths/Rhythm/R2.tsx';
+import { R3 } from './pages/StudyPaths/Rhythm/R3.tsx';
+import { R4 } from './pages/StudyPaths/Rhythm/R4.tsx';
+import { RTest } from './pages/StudyPaths/Rhythm/RTest.tsx';
+
+// Sheet Music
+import { SheetMusic } from './pages/StudyPaths/SheetMusic/SheetMusic.tsx';
+import { S1 } from './pages/StudyPaths/SheetMusic/S1.tsx';
+import { S2 } from './pages/StudyPaths/SheetMusic/S2.tsx';
+import { S3 } from './pages/StudyPaths/SheetMusic/S3.tsx';
+import { S4 } from './pages/StudyPaths/SheetMusic/S4.tsx';
+import { STest } from './pages/StudyPaths/SheetMusic/STest.tsx';
+
+// Music Practice
+import { MusicPractice } from './pages/StudyPaths/MusicPractice/MusicPractice.tsx';
+import { Twinkle } from './pages/StudyPaths/MusicPractice/Twinkle.tsx';
+import { ParabensVoce } from './pages/StudyPaths/MusicPractice/ParabensVoce.tsx';
+import { CravoRosa } from './pages/StudyPaths/MusicPractice/CravoRosa.tsx';
+import { CirandaCirandinha } from './pages/StudyPaths/MusicPractice/CirandaCirandinha.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -44,8 +77,37 @@ createRoot(document.getElementById('root')!).render(
 
           <Route path='/chords' element={<Chords />}/>
           <Route path='/chords/01' element={<C1 />} />
+          <Route path='/chords/02' element={<C2 />} />
+          <Route path='/chords/03' element={<C3 />} />
+          <Route path='/chords/04' element={<C4 />} />
+          <Route path='/chords/test' element={<CTest />} />
 
           <Route path='/ear-training' element={<EarTraining />} />
+          <Route path='/ear-training/01' element={<E1 />} />
+          <Route path='/ear-training/02' element={<E2 />} />
+          <Route path='/ear-training/03' element={<E3 />} />
+          <Route path='/ear-training/04' element={<E4 />} />
+          <Route path='/ear-training/test' element={<ETest />} />
+
+          <Route path='/rhythm' element={<Rhythm />} />
+          <Route path='/rhythm/01' element={<R1 />} />
+          <Route path='/rhythm/02' element={<R2 />} />
+          <Route path='/rhythm/03' element={<R3 />} />
+          <Route path='/rhythm/04' element={<R4 />} />
+          <Route path='/rhythm/test' element={<RTest />} />
+
+          <Route path='/sheet-music' element={<SheetMusic />} />
+          <Route path='/sheet-music/01' element={<S1 />} />
+          <Route path='/sheet-music/02' element={<S2 />} />
+          <Route path='/sheet-music/03' element={<S3 />} />
+          <Route path='/sheet-music/04' element={<S4 />} />
+          <Route path='/sheet-music/test' element={<STest />} />
+
+          <Route path='/music-practice' element={<MusicPractice />} />
+          <Route path='/music-practice/twinkle' element={<Twinkle />} />
+          <Route path='/music-practice/song2' element={<ParabensVoce />} />
+          <Route path='/music-practice/song3' element={<CravoRosa />} />
+          <Route path='/music-practice/song4' element={<CirandaCirandinha />} />
         </Routes>
       </BrowserRouter>
     </Provider>

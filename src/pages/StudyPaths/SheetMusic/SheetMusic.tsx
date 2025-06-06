@@ -3,7 +3,7 @@ import { ChevronLeft, Check, Lock } from "lucide-react";
 import { useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 
-const EarTraining = () => {
+const SheetMusic = () => {
   const navigate = useNavigate();
   const [completedLessons, setCompletedLessons] = useState<string[]>([]);
 
@@ -11,11 +11,7 @@ const EarTraining = () => {
     // Load completed lessons from localStorage
     const completed = localStorage.getItem('completedLessons');
     if (completed) {
-      const parsedCompleted = JSON.parse(completed);
-      setCompletedLessons(parsedCompleted);
-      console.log('Loaded completed lessons:', parsedCompleted);
-      console.log('Basic Theory completed:', parsedCompleted.includes('btest'));
-      console.log('Chords completed:', parsedCompleted.includes('ctest'));
+      setCompletedLessons(JSON.parse(completed));
     }
   }, []);
 
@@ -24,32 +20,22 @@ const EarTraining = () => {
   };
 
   const isLessonLocked = (lessonId: string) => {
-    // Check for development unlock flag
-    const devUnlockAll = localStorage.getItem('devUnlockAll');
-    if (devUnlockAll === 'true') {
-      return false;
-    }
-
-    // First verify if basic theory and chords are completed
-    const basicTheoryCompleted = completedLessons.includes('btest');
-    const chordsCompleted = completedLessons.includes('ctest');
-    
-    if (!basicTheoryCompleted || !chordsCompleted) {
-      console.log('Prerequisites not met:', { basicTheoryCompleted, chordsCompleted });
+    // First verify if rhythm is completed
+    if (!completedLessons.includes('rtest')) {
       return true;
     }
 
     switch (lessonId) {
-      case 'e1':
+      case 's1':
         return false; // First lesson is always unlocked
-      case 'e2':
-        return !isLessonCompleted('e1');
-      case 'e3':
-        return !isLessonCompleted('e2');
-      case 'e4':
-        return !isLessonCompleted('e3');
-      case 'etest':
-        return !isLessonCompleted('e4');
+      case 's2':
+        return !isLessonCompleted('s1');
+      case 's3':
+        return !isLessonCompleted('s2');
+      case 's4':
+        return !isLessonCompleted('s3');
+      case 'stest':
+        return !isLessonCompleted('s4');
       default:
         return false;
     }
@@ -76,7 +62,7 @@ const EarTraining = () => {
         </Icon>
       </Box>
       <Box paddingY="4rem" width="100%" boxShadow="0px 5px 5px -2px rgba(0, 0, 0, .1)">
-        <Text fontSize="2rem" fontWeight="bold" color="#2D0C57" textAlign="center">Treinamento Auditivo</Text>
+        <Text fontSize="2rem" fontWeight="bold" color="#2D0C57" textAlign="center">Leitura de Partitura</Text>
       </Box>
       <Box marginTop="3rem">
         <Box
@@ -86,40 +72,19 @@ const EarTraining = () => {
           borderWidth="1px"
           padding="1rem"
           marginBottom="1rem"
-          onClick={() => handleLessonClick('/ear-training/01', 'e1')}
+          onClick={() => handleLessonClick('/sheet-music/01', 's1')}
           display="flex"
           justifyContent="space-between"
           alignItems="center"
-          cursor="pointer"
-          opacity={1}
+          cursor={isLessonLocked('s1') ? 'not-allowed' : 'pointer'}
+          opacity={isLessonLocked('s1') ? 0.5 : 1}
         >
-          <Text color="#2D0C57" fontWeight="bold">Aula 1: Reconhecimento de Notas</Text>
-          {isLessonCompleted('e1') && (
+          <Text color="#2D0C57" fontWeight="bold">Aula 1: Pauta e Claves</Text>
+          {isLessonCompleted('s1') ? (
             <Icon color="#0BCE83">
               <Check />
             </Icon>
-          )}
-        </Box>
-        <Box
-          width="100%"
-          backgroundColor="#FFFFFF"
-          borderColor="#D9D0E3"
-          borderWidth="1px"
-          padding="1rem"
-          marginBottom="1rem"
-          onClick={() => handleLessonClick('/ear-training/02', 'e2')}
-          display="flex"
-          justifyContent="space-between"
-          alignItems="center"
-          cursor={isLessonLocked('e2') ? 'not-allowed' : 'pointer'}
-          opacity={isLessonLocked('e2') ? 0.5 : 1}
-        >
-          <Text color="#2D0C57" fontWeight="bold">Aula 2: Intervalos</Text>
-          {isLessonCompleted('e2') ? (
-            <Icon color="#0BCE83">
-              <Check />
-            </Icon>
-          ) : isLessonLocked('e2') && (
+          ) : isLessonLocked('s1') && (
             <Icon color="#2D0C57">
               <Lock />
             </Icon>
@@ -132,19 +97,19 @@ const EarTraining = () => {
           borderWidth="1px"
           padding="1rem"
           marginBottom="1rem"
-          onClick={() => handleLessonClick('/ear-training/03', 'e3')}
+          onClick={() => handleLessonClick('/sheet-music/02', 's2')}
           display="flex"
           justifyContent="space-between"
           alignItems="center"
-          cursor={isLessonLocked('e3') ? 'not-allowed' : 'pointer'}
-          opacity={isLessonLocked('e3') ? 0.5 : 1}
+          cursor={isLessonLocked('s2') ? 'not-allowed' : 'pointer'}
+          opacity={isLessonLocked('s2') ? 0.5 : 1}
         >
-          <Text color="#2D0C57" fontWeight="bold">Aula 3: Acordes</Text>
-          {isLessonCompleted('e3') ? (
+          <Text color="#2D0C57" fontWeight="bold">Aula 2: Notas na Pauta</Text>
+          {isLessonCompleted('s2') ? (
             <Icon color="#0BCE83">
               <Check />
             </Icon>
-          ) : isLessonLocked('e3') && (
+          ) : isLessonLocked('s2') && (
             <Icon color="#2D0C57">
               <Lock />
             </Icon>
@@ -157,19 +122,19 @@ const EarTraining = () => {
           borderWidth="1px"
           padding="1rem"
           marginBottom="1rem"
-          onClick={() => handleLessonClick('/ear-training/04', 'e4')}
+          onClick={() => handleLessonClick('/sheet-music/03', 's3')}
           display="flex"
           justifyContent="space-between"
           alignItems="center"
-          cursor={isLessonLocked('e4') ? 'not-allowed' : 'pointer'}
-          opacity={isLessonLocked('e4') ? 0.5 : 1}
+          cursor={isLessonLocked('s3') ? 'not-allowed' : 'pointer'}
+          opacity={isLessonLocked('s3') ? 0.5 : 1}
         >
-          <Text color="#2D0C57" fontWeight="bold">Aula 4: Melodias</Text>
-          {isLessonCompleted('e4') ? (
+          <Text color="#2D0C57" fontWeight="bold">Aula 3: Figuras e Durações</Text>
+          {isLessonCompleted('s3') ? (
             <Icon color="#0BCE83">
               <Check />
             </Icon>
-          ) : isLessonLocked('e4') && (
+          ) : isLessonLocked('s3') && (
             <Icon color="#2D0C57">
               <Lock />
             </Icon>
@@ -182,19 +147,44 @@ const EarTraining = () => {
           borderWidth="1px"
           padding="1rem"
           marginBottom="1rem"
-          onClick={() => handleLessonClick('/ear-training/test', 'etest')}
+          onClick={() => handleLessonClick('/sheet-music/04', 's4')}
           display="flex"
           justifyContent="space-between"
           alignItems="center"
-          cursor={isLessonLocked('etest') ? 'not-allowed' : 'pointer'}
-          opacity={isLessonLocked('etest') ? 0.5 : 1}
+          cursor={isLessonLocked('s4') ? 'not-allowed' : 'pointer'}
+          opacity={isLessonLocked('s4') ? 0.5 : 1}
+        >
+          <Text color="#2D0C57" fontWeight="bold">Aula 4: Lendo Melodias Simples</Text>
+          {isLessonCompleted('s4') ? (
+            <Icon color="#0BCE83">
+              <Check />
+            </Icon>
+          ) : isLessonLocked('s4') && (
+            <Icon color="#2D0C57">
+              <Lock />
+            </Icon>
+          )}
+        </Box>
+        <Box
+          width="100%"
+          backgroundColor="#FFFFFF"
+          borderColor="#D9D0E3"
+          borderWidth="1px"
+          padding="1rem"
+          marginBottom="1rem"
+          onClick={() => handleLessonClick('/sheet-music/test', 'stest')}
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          cursor={isLessonLocked('stest') ? 'not-allowed' : 'pointer'}
+          opacity={isLessonLocked('stest') ? 0.5 : 1}
         >
           <Text color="#2D0C57" fontWeight="bold">Teste Final</Text>
-          {isLessonCompleted('etest') ? (
+          {isLessonCompleted('stest') ? (
             <Icon color="#0BCE83">
               <Check />
             </Icon>
-          ) : isLessonLocked('etest') && (
+          ) : isLessonLocked('stest') && (
             <Icon color="#2D0C57">
               <Lock />
             </Icon>
@@ -203,6 +193,6 @@ const EarTraining = () => {
       </Box>
     </Box>
   );
-}
+};
 
-export { EarTraining };
+export { SheetMusic }; 

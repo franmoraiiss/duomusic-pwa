@@ -3,7 +3,7 @@ import { ChevronLeft, Check, Lock } from "lucide-react";
 import { useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 
-const EarTraining = () => {
+const Rhythm = () => {
   const navigate = useNavigate();
   const [completedLessons, setCompletedLessons] = useState<string[]>([]);
 
@@ -11,11 +11,7 @@ const EarTraining = () => {
     // Load completed lessons from localStorage
     const completed = localStorage.getItem('completedLessons');
     if (completed) {
-      const parsedCompleted = JSON.parse(completed);
-      setCompletedLessons(parsedCompleted);
-      console.log('Loaded completed lessons:', parsedCompleted);
-      console.log('Basic Theory completed:', parsedCompleted.includes('btest'));
-      console.log('Chords completed:', parsedCompleted.includes('ctest'));
+      setCompletedLessons(JSON.parse(completed));
     }
   }, []);
 
@@ -24,32 +20,22 @@ const EarTraining = () => {
   };
 
   const isLessonLocked = (lessonId: string) => {
-    // Check for development unlock flag
-    const devUnlockAll = localStorage.getItem('devUnlockAll');
-    if (devUnlockAll === 'true') {
-      return false;
-    }
-
-    // First verify if basic theory and chords are completed
-    const basicTheoryCompleted = completedLessons.includes('btest');
-    const chordsCompleted = completedLessons.includes('ctest');
-    
-    if (!basicTheoryCompleted || !chordsCompleted) {
-      console.log('Prerequisites not met:', { basicTheoryCompleted, chordsCompleted });
+    // First verify if ear training is completed
+    if (!completedLessons.includes('etest')) {
       return true;
     }
 
     switch (lessonId) {
-      case 'e1':
+      case 'r1':
         return false; // First lesson is always unlocked
-      case 'e2':
-        return !isLessonCompleted('e1');
-      case 'e3':
-        return !isLessonCompleted('e2');
-      case 'e4':
-        return !isLessonCompleted('e3');
-      case 'etest':
-        return !isLessonCompleted('e4');
+      case 'r2':
+        return !isLessonCompleted('r1');
+      case 'r3':
+        return !isLessonCompleted('r2');
+      case 'r4':
+        return !isLessonCompleted('r3');
+      case 'rtest':
+        return !isLessonCompleted('r4');
       default:
         return false;
     }
@@ -76,7 +62,7 @@ const EarTraining = () => {
         </Icon>
       </Box>
       <Box paddingY="4rem" width="100%" boxShadow="0px 5px 5px -2px rgba(0, 0, 0, .1)">
-        <Text fontSize="2rem" fontWeight="bold" color="#2D0C57" textAlign="center">Treinamento Auditivo</Text>
+        <Text fontSize="2rem" fontWeight="bold" color="#2D0C57" textAlign="center">Ritmo e Tempo</Text>
       </Box>
       <Box marginTop="3rem">
         <Box
@@ -86,40 +72,19 @@ const EarTraining = () => {
           borderWidth="1px"
           padding="1rem"
           marginBottom="1rem"
-          onClick={() => handleLessonClick('/ear-training/01', 'e1')}
+          onClick={() => handleLessonClick('/rhythm/01', 'r1')}
           display="flex"
           justifyContent="space-between"
           alignItems="center"
-          cursor="pointer"
-          opacity={1}
+          cursor={isLessonLocked('r1') ? 'not-allowed' : 'pointer'}
+          opacity={isLessonLocked('r1') ? 0.5 : 1}
         >
-          <Text color="#2D0C57" fontWeight="bold">Aula 1: Reconhecimento de Notas</Text>
-          {isLessonCompleted('e1') && (
+          <Text color="#2D0C57" fontWeight="bold">Aula 1: Conceitos Básicos de Ritmo</Text>
+          {isLessonCompleted('r1') ? (
             <Icon color="#0BCE83">
               <Check />
             </Icon>
-          )}
-        </Box>
-        <Box
-          width="100%"
-          backgroundColor="#FFFFFF"
-          borderColor="#D9D0E3"
-          borderWidth="1px"
-          padding="1rem"
-          marginBottom="1rem"
-          onClick={() => handleLessonClick('/ear-training/02', 'e2')}
-          display="flex"
-          justifyContent="space-between"
-          alignItems="center"
-          cursor={isLessonLocked('e2') ? 'not-allowed' : 'pointer'}
-          opacity={isLessonLocked('e2') ? 0.5 : 1}
-        >
-          <Text color="#2D0C57" fontWeight="bold">Aula 2: Intervalos</Text>
-          {isLessonCompleted('e2') ? (
-            <Icon color="#0BCE83">
-              <Check />
-            </Icon>
-          ) : isLessonLocked('e2') && (
+          ) : isLessonLocked('r1') && (
             <Icon color="#2D0C57">
               <Lock />
             </Icon>
@@ -132,19 +97,19 @@ const EarTraining = () => {
           borderWidth="1px"
           padding="1rem"
           marginBottom="1rem"
-          onClick={() => handleLessonClick('/ear-training/03', 'e3')}
+          onClick={() => handleLessonClick('/rhythm/02', 'r2')}
           display="flex"
           justifyContent="space-between"
           alignItems="center"
-          cursor={isLessonLocked('e3') ? 'not-allowed' : 'pointer'}
-          opacity={isLessonLocked('e3') ? 0.5 : 1}
+          cursor={isLessonLocked('r2') ? 'not-allowed' : 'pointer'}
+          opacity={isLessonLocked('r2') ? 0.5 : 1}
         >
-          <Text color="#2D0C57" fontWeight="bold">Aula 3: Acordes</Text>
-          {isLessonCompleted('e3') ? (
+          <Text color="#2D0C57" fontWeight="bold">Aula 2: Compassos e Tempos</Text>
+          {isLessonCompleted('r2') ? (
             <Icon color="#0BCE83">
               <Check />
             </Icon>
-          ) : isLessonLocked('e3') && (
+          ) : isLessonLocked('r2') && (
             <Icon color="#2D0C57">
               <Lock />
             </Icon>
@@ -157,19 +122,19 @@ const EarTraining = () => {
           borderWidth="1px"
           padding="1rem"
           marginBottom="1rem"
-          onClick={() => handleLessonClick('/ear-training/04', 'e4')}
+          onClick={() => handleLessonClick('/rhythm/03', 'r3')}
           display="flex"
           justifyContent="space-between"
           alignItems="center"
-          cursor={isLessonLocked('e4') ? 'not-allowed' : 'pointer'}
-          opacity={isLessonLocked('e4') ? 0.5 : 1}
+          cursor={isLessonLocked('r3') ? 'not-allowed' : 'pointer'}
+          opacity={isLessonLocked('r3') ? 0.5 : 1}
         >
-          <Text color="#2D0C57" fontWeight="bold">Aula 4: Melodias</Text>
-          {isLessonCompleted('e4') ? (
+          <Text color="#2D0C57" fontWeight="bold">Aula 3: Figuras Rítmicas</Text>
+          {isLessonCompleted('r3') ? (
             <Icon color="#0BCE83">
               <Check />
             </Icon>
-          ) : isLessonLocked('e4') && (
+          ) : isLessonLocked('r3') && (
             <Icon color="#2D0C57">
               <Lock />
             </Icon>
@@ -182,19 +147,44 @@ const EarTraining = () => {
           borderWidth="1px"
           padding="1rem"
           marginBottom="1rem"
-          onClick={() => handleLessonClick('/ear-training/test', 'etest')}
+          onClick={() => handleLessonClick('/rhythm/04', 'r4')}
           display="flex"
           justifyContent="space-between"
           alignItems="center"
-          cursor={isLessonLocked('etest') ? 'not-allowed' : 'pointer'}
-          opacity={isLessonLocked('etest') ? 0.5 : 1}
+          cursor={isLessonLocked('r4') ? 'not-allowed' : 'pointer'}
+          opacity={isLessonLocked('r4') ? 0.5 : 1}
+        >
+          <Text color="#2D0C57" fontWeight="bold">Aula 4: Ritmos Brasileiros</Text>
+          {isLessonCompleted('r4') ? (
+            <Icon color="#0BCE83">
+              <Check />
+            </Icon>
+          ) : isLessonLocked('r4') && (
+            <Icon color="#2D0C57">
+              <Lock />
+            </Icon>
+          )}
+        </Box>
+        <Box
+          width="100%"
+          backgroundColor="#FFFFFF"
+          borderColor="#D9D0E3"
+          borderWidth="1px"
+          padding="1rem"
+          marginBottom="1rem"
+          onClick={() => handleLessonClick('/rhythm/test', 'rtest')}
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          cursor={isLessonLocked('rtest') ? 'not-allowed' : 'pointer'}
+          opacity={isLessonLocked('rtest') ? 0.5 : 1}
         >
           <Text color="#2D0C57" fontWeight="bold">Teste Final</Text>
-          {isLessonCompleted('etest') ? (
+          {isLessonCompleted('rtest') ? (
             <Icon color="#0BCE83">
               <Check />
             </Icon>
-          ) : isLessonLocked('etest') && (
+          ) : isLessonLocked('rtest') && (
             <Icon color="#2D0C57">
               <Lock />
             </Icon>
@@ -203,6 +193,6 @@ const EarTraining = () => {
       </Box>
     </Box>
   );
-}
+};
 
-export { EarTraining };
+export { Rhythm }; 

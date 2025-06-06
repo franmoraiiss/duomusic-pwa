@@ -32,8 +32,10 @@ const Chords = () => {
         return !isLessonCompleted('c1');
       case 'c3':
         return !isLessonCompleted('c2');
-      case 'ctest':
+      case 'c4':
         return !isLessonCompleted('c3');
+      case 'ctest':
+        return !isLessonCompleted('c4');
       default:
         return false;
     }
@@ -145,6 +147,31 @@ const Chords = () => {
           borderWidth="1px"
           padding="1rem"
           marginBottom="1rem"
+          onClick={() => handleLessonClick('/chords/04', 'c4')}
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          cursor={isLessonLocked('c4') ? 'not-allowed' : 'pointer'}
+          opacity={isLessonLocked('c4') ? 0.5 : 1}
+        >
+          <Text color="#2D0C57" fontWeight="bold">Aula 4: Aplicando em músicas</Text>
+          {isLessonCompleted('c4') ? (
+            <Icon color="#0BCE83">
+              <Check />
+            </Icon>
+          ) : isLessonLocked('c4') && (
+            <Icon color="#2D0C57">
+              <Lock />
+            </Icon>
+          )}
+        </Box>
+        <Box
+          width="100%"
+          backgroundColor="#FFFFFF"
+          borderColor="#D9D0E3"
+          borderWidth="1px"
+          padding="1rem"
+          marginBottom="1rem"
           onClick={() => handleLessonClick('/chords/test', 'ctest')}
           display="flex"
           justifyContent="space-between"
@@ -152,7 +179,7 @@ const Chords = () => {
           cursor={isLessonLocked('ctest') ? 'not-allowed' : 'pointer'}
           opacity={isLessonLocked('ctest') ? 0.5 : 1}
         >
-          <Text color="#2D0C57" fontWeight="bold">Exercícios</Text>
+          <Text color="#2D0C57" fontWeight="bold">Teste Final</Text>
           {isLessonCompleted('ctest') ? (
             <Icon color="#0BCE83">
               <Check />

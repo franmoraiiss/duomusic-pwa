@@ -4,6 +4,9 @@ import EarImage from "@/assets/ouvido.jpg"
 import Chords from "@/assets/acordes.jpeg"
 import Diapason from "@/assets/diapason.jpg"
 import PianoPlaygroundImage from "@/assets/piano-playground.jpg"
+import RhythmImage from "@/assets/rhythm.jpg"
+import SheetMusicImage from "@/assets/sheet-music.jpg"
+import MusicPracticeImage from "@/assets/music-practice.jpg"
 import { SingleClass } from "@/components/single-class";
 import { ClassSeparator } from "@/components/class-separator";
 import { Grid2x2, User } from "lucide-react";
@@ -28,7 +31,13 @@ const StudyPath = () => {
       case 'chords':
         return completedLessons.includes('btest'); // Unlocked after completing basic theory test
       case 'ear-training':
-        return completedLessons.includes('chords-test'); // Will be unlocked after completing chords module
+        return completedLessons.includes('ctest'); // Will be unlocked after completing chords test
+      case 'rhythm':
+        return completedLessons.includes('etest'); // Will be unlocked after completing ear training test
+      case 'sheet-music':
+        return completedLessons.includes('rtest'); // Will be unlocked after completing rhythm test
+      case 'music-practice':
+        return completedLessons.includes('stest'); // Will be unlocked after completing sheet music test
       default:
         return true;
     }
@@ -83,6 +92,33 @@ const StudyPath = () => {
                 classPath="/ear-training"
                 moduleId="ear-training"
                 isLocked={!isModuleUnlocked('ear-training')}
+              />
+              <ClassSeparator />
+
+              <SingleClass
+                image={RhythmImage}
+                text="Ritmo e Tempo"
+                classPath="/rhythm"
+                moduleId="rhythm"
+                isLocked={!isModuleUnlocked('rhythm')}
+              />
+              <ClassSeparator />
+
+              <SingleClass
+                image={SheetMusicImage}
+                text="Leitura de Partitura"
+                classPath="/sheet-music"
+                moduleId="sheet-music"
+                isLocked={!isModuleUnlocked('sheet-music')}
+              />
+              <ClassSeparator />
+
+              <SingleClass
+                image={MusicPracticeImage}
+                text="Prática Musical"
+                classPath="/music-practice"
+                moduleId="music-practice"
+                isLocked={!isModuleUnlocked('music-practice')}
               />
 
               <Box marginTop="3rem">
