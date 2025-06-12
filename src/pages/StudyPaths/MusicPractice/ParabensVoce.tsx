@@ -35,8 +35,8 @@ const song: Note[] = [
   { key: MidiNumbers.fromNote('F4'), duration: 500 }, // li-
   { key: MidiNumbers.fromNote('E4'), duration: 500 }, // ci-
   { key: MidiNumbers.fromNote('D4'), duration: 1000 }, // da-
-  { key: MidiNumbers.fromNote('B4'), duration: 250 }, // des
-  { key: MidiNumbers.fromNote('B4'), duration: 250 }, // Mui-
+  { key: MidiNumbers.fromNote('Bb4'), duration: 250 }, // des
+  { key: MidiNumbers.fromNote('Bb4'), duration: 250 }, // Mui-
   { key: MidiNumbers.fromNote('A4'), duration: 500 }, // tos
   { key: MidiNumbers.fromNote('F4'), duration: 500 }, // a-
   { key: MidiNumbers.fromNote('G4'), duration: 500 }, // nos

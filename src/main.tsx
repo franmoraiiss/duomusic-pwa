@@ -5,6 +5,7 @@ import { BrowserRouter } from "react-router";
 import { Provider } from '@/components/ui/provider.tsx';
 
 import { Login } from './pages/Login.tsx'
+import { CreateAccount } from './pages/CreateAccount.tsx'
 import { Welcome } from './pages/Welcome.tsx';
 import { StudyPath } from './pages/StudyPath.tsx';
 import { PianoPlayground } from './pages/PianoPlayground.tsx';
@@ -63,6 +64,7 @@ createRoot(document.getElementById('root')!).render(
       <BrowserRouter>
         <Routes>
           <Route path='/' element={<Login />}/>
+          <Route path='/create-account' element={<CreateAccount />}/>
           <Route path='/welcome' element={<Welcome />}/>
           <Route path='/study-path' element={<StudyPath />}/>
           <Route path='/piano-playground' element={<PianoPlayground />}/>

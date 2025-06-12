@@ -1,4 +1,4 @@
-import { Box, Icon, Progress, Tabs, Text } from "@chakra-ui/react"
+import { Box, Icon, Progress, Tabs, Text, Button, HStack } from "@chakra-ui/react"
 import StudyPathImage from "@/assets/music-path01.png"
 import EarImage from "@/assets/ouvido.jpg"
 import Chords from "@/assets/acordes.jpeg"
@@ -9,38 +9,93 @@ import SheetMusicImage from "@/assets/sheet-music.jpg"
 import MusicPracticeImage from "@/assets/music-practice.jpg"
 import { SingleClass } from "@/components/single-class";
 import { ClassSeparator } from "@/components/class-separator";
-import { Grid2x2, User } from "lucide-react";
+import { Grid2x2, User, LogOut } from "lucide-react";
 import { OrientationWarning } from "@/components/orientation-warning";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
+import { useStreak } from "@/hooks/useStreak";
 
 const StudyPath = () => {
   const [completedLessons, setCompletedLessons] = useState<string[]>([]);
+  const [exerciseProgress, setExerciseProgress] = useState({ percentage: 0, completed: 0, total: 5 });
+  const [moduleProgress, setModuleProgress] = useState({ percentage: 0, completed: 0, total: 6 });
+  const { streak, incrementStreak } = useStreak();
+  const navigate = useNavigate();
+
+  const calculateExerciseProgress = (completedLessons: string[]) => {
+    const totalTests = 5; // btest, ctest, etest, rtest, stest
+    const completedTests = ['btest', 'ctest', 'etest', 'rtest', 'stest']
+      .filter(test => completedLessons.includes(test)).length;
+    const percentage = (completedTests / totalTests) * 100;
+    
+    return {
+      percentage,
+      completed: completedTests,
+      total: totalTests
+    };
+  };
+
+  const calculateModuleProgress = (completedLessons: string[]) => {
+    const totalModules = 6; // basic-theory, chords, ear-training, rhythm, sheet-music, music-practice
+    const completedModules = ['basic-theory', 'chords', 'ear-training', 'rhythm', 'sheet-music', 'music-practice']
+      .filter(module => isModuleUnlocked(module, completedLessons)).length;
+    const percentage = (completedModules / totalModules) * 100;
+    
+    return {
+      percentage,
+      completed: completedModules,
+      total: totalModules
+    };
+  };
 
   useEffect(() => {
     // Load completed lessons from localStorage
     const completed = localStorage.getItem('completedLessons');
     if (completed) {
-      setCompletedLessons(JSON.parse(completed));
+      const loadedLessons = JSON.parse(completed);
+      setCompletedLessons(loadedLessons);
+      
+      // Calculate progress when lessons are loaded
+      setExerciseProgress(calculateExerciseProgress(loadedLessons));
+      setModuleProgress(calculateModuleProgress(loadedLessons));
     }
   }, []);
 
-  const isModuleUnlocked = (moduleId: string) => {
+  // Update progress whenever completedLessons changes
+  useEffect(() => {
+    setExerciseProgress(calculateExerciseProgress(completedLessons));
+    setModuleProgress(calculateModuleProgress(completedLessons));
+  }, [completedLessons]);
+
+  const handleLogout = () => {
+    localStorage.clear(); // Clear all localStorage data
+    navigate('/'); // Redirect to login page
+  };
+
+  const isModuleUnlocked = (moduleId: string, lessons: string[]) => {
     switch (moduleId) {
       case 'basic-theory':
         return true; // First module is always unlocked
       case 'chords':
-        return completedLessons.includes('btest'); // Unlocked after completing basic theory test
+        return lessons.includes('btest'); // Unlocked after completing basic theory test
       case 'ear-training':
-        return completedLessons.includes('ctest'); // Will be unlocked after completing chords test
+        return lessons.includes('ctest'); // Will be unlocked after completing chords test
       case 'rhythm':
-        return completedLessons.includes('etest'); // Will be unlocked after completing ear training test
+        return lessons.includes('etest'); // Will be unlocked after completing ear training test
       case 'sheet-music':
-        return completedLessons.includes('rtest'); // Will be unlocked after completing rhythm test
+        return lessons.includes('rtest'); // Will be unlocked after completing rhythm test
       case 'music-practice':
-        return completedLessons.includes('stest'); // Will be unlocked after completing sheet music test
+        return lessons.includes('stest'); // Will be unlocked after completing sheet music test
       default:
         return true;
     }
+  };
+
+  const handleLessonComplete = (lessonId: string) => {
+    const updatedLessons = [...completedLessons, lessonId];
+    setCompletedLessons(updatedLessons);
+    localStorage.setItem('completedLessons', JSON.stringify(updatedLessons));
+    incrementStreak(); // Increment streak when a lesson is completed
   };
 
   return (
@@ -73,7 +128,8 @@ const StudyPath = () => {
                 text="Teoria musical básica"
                 classPath="/basic-music-theory"
                 moduleId="basic-theory"
-                isLocked={!isModuleUnlocked('basic-theory')}
+                isLocked={!isModuleUnlocked('basic-theory', completedLessons)}
+                onComplete={() => handleLessonComplete('basic-theory')}
               />
               <ClassSeparator />
 
@@ -82,7 +138,8 @@ const StudyPath = () => {
                 text="Aprendendo acordes"
                 classPath="/chords"
                 moduleId="chords"
-                isLocked={!isModuleUnlocked('chords')}
+                isLocked={!isModuleUnlocked('chords', completedLessons)}
+                onComplete={() => handleLessonComplete('chords')}
               />
               <ClassSeparator />
 
@@ -91,7 +148,8 @@ const StudyPath = () => {
                 text="Treinando seu ouvido"
                 classPath="/ear-training"
                 moduleId="ear-training"
-                isLocked={!isModuleUnlocked('ear-training')}
+                isLocked={!isModuleUnlocked('ear-training', completedLessons)}
+                onComplete={() => handleLessonComplete('ear-training')}
               />
               <ClassSeparator />
 
@@ -100,7 +158,8 @@ const StudyPath = () => {
                 text="Ritmo e Tempo"
                 classPath="/rhythm"
                 moduleId="rhythm"
-                isLocked={!isModuleUnlocked('rhythm')}
+                isLocked={!isModuleUnlocked('rhythm', completedLessons)}
+                onComplete={() => handleLessonComplete('rhythm')}
               />
               <ClassSeparator />
 
@@ -109,7 +168,8 @@ const StudyPath = () => {
                 text="Leitura de Partitura"
                 classPath="/sheet-music"
                 moduleId="sheet-music"
-                isLocked={!isModuleUnlocked('sheet-music')}
+                isLocked={!isModuleUnlocked('sheet-music', completedLessons)}
+                onComplete={() => handleLessonComplete('sheet-music')}
               />
               <ClassSeparator />
 
@@ -118,7 +178,8 @@ const StudyPath = () => {
                 text="Prática Musical"
                 classPath="/music-practice"
                 moduleId="music-practice"
-                isLocked={!isModuleUnlocked('music-practice')}
+                isLocked={!isModuleUnlocked('music-practice', completedLessons)}
+                onComplete={() => handleLessonComplete('music-practice')}
               />
 
               <Box marginTop="3rem">
@@ -151,43 +212,65 @@ const StudyPath = () => {
               paddingX="2rem"
             >
               <Box paddingY="2rem">
-                <Text fontSize="2rem">Olá, Francisco!</Text>
+                <Text fontSize="2rem">Olá, {localStorage.getItem('user_name') || 'Estudante'}!</Text>
                 <Text>Aqui você pode acompanhar seu progresso</Text>
               </Box>
 
               <Box paddingY="1rem">
                 <Text>Exercícios realizados</Text>
-                <Progress.Root value={50} size="xs" colorPalette="green">
+                <Progress.Root value={exerciseProgress.percentage} size="xs" colorPalette="green">
                   <Progress.Track>
                     <Progress.Range />
                   </Progress.Track>
-                  <Progress.ValueText>50% (5 de 10)</Progress.ValueText>
+                  <Progress.ValueText>
+                    {exerciseProgress.percentage}% ({exerciseProgress.completed} de {exerciseProgress.total})
+                  </Progress.ValueText>
                 </Progress.Root>
               </Box>
 
               <Box paddingY="1rem">
                 <Text>Aulas concluídas</Text>
-                <Progress.Root value={20} size="xs" colorPalette="green">
+                <Progress.Root value={moduleProgress.percentage} size="xs" colorPalette="green">
                   <Progress.Track>
                     <Progress.Range />
                   </Progress.Track>
-                  <Progress.ValueText>20% (1 de 4)</Progress.ValueText>
+                  <Progress.ValueText>
+                    {moduleProgress.percentage}% ({moduleProgress.completed} de {moduleProgress.total})
+                  </Progress.ValueText>
                 </Progress.Root>
               </Box>
 
               <Box paddingY="1rem">
                 <Text>Seu streak atual:</Text>
-                <Text fontWeight="light" textAlign="center" fontSize="2.5rem" paddingY="1rem">5 dias 🔥</Text>
-                <Text fontWeight="light" fontSize="0.75rem">Parabéns, continue estudando para aumentar seu streak.</Text>
+                <Text fontWeight="light" textAlign="center" fontSize="2.5rem" paddingY="1rem">{streak} dias 🔥</Text>
+                <Text fontWeight="light" fontSize="0.75rem">
+                  {streak > 0 
+                    ? "Parabéns, continue estudando para aumentar seu streak."
+                    : "Complete uma aula hoje para começar seu streak!"}
+                </Text>
               </Box>
 
               <Box paddingY="1rem">
                 <Text>Ranking semanal:</Text>
-                <Text fontWeight="light" fontSize="1">1. Francisco (5 🔥)</Text>
+                <Text fontWeight="light" fontSize="1">1. {localStorage.getItem('user_name') || 'Você'} ({streak} 🔥)</Text>
                 <Text fontWeight="light" fontSize="1">2. User (1 🔥)</Text>
                 <Text fontWeight="light" fontSize="1">3. User (1 🔥)</Text>
                 <Text fontWeight="light" fontSize="1">4. User (1 🔥)</Text>
                 <Text fontWeight="light" fontSize="1">5. User (1 🔥)</Text>
+              </Box>
+
+              <Box paddingY="2rem">
+                <Button
+                  width="full"
+                  variant="outline"
+                  colorScheme="red"
+                  onClick={handleLogout}
+                >
+                  <HStack>
+                    <LogOut size={20} />
+                    <Text>Sair</Text>
+                  </HStack>
+                </Button>
               </Box>
             </Box>
           </Tabs.Content>

@@ -1,6 +1,6 @@
 import { Box, Button, Icon, Text } from "@chakra-ui/react";
 import { ChevronLeft, Play, Music } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router";
 import { Piano, MidiNumbers } from 'react-piano';
 import 'react-piano/dist/styles.css';
