@@ -2,6 +2,7 @@ import { Box, Button, Field, Input, Text, VStack } from "@chakra-ui/react"
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { useState } from "react";
+import { userService } from "@/services/user.service";
 
 interface FormValues {
   name: string;
@@ -11,6 +12,7 @@ interface FormValues {
 
 const CreateAccount = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   
   const {
     register,
@@ -25,25 +27,16 @@ const CreateAccount = () => {
   const createAccount = async (data: FormValues) => {
     try {
       setIsLoading(true);
-      const response = await fetch('http://localhost:3000/api/auth/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
-
-      if (!response.ok) {
-        throw new Error('Registration failed');
-      }
-
-      await response.json();
+      setError(null);
+      
+      await userService.createAccount(data);
       console.log('Account created successfully');
       
       // Redirect to login page
       navigate('/');
     } catch (error) {
       console.error('Registration failed:', error);
+      setError(error instanceof Error ? error.message : 'Registration failed');
     } finally {
       setIsLoading(false);
     }
@@ -65,6 +58,12 @@ const CreateAccount = () => {
         
         <form onSubmit={onSubmit} style={{ width: '100%' }}>
           <VStack gap={4} width="full">
+            {error && (
+              <Text color="red.300" fontSize="sm">
+                {error}
+              </Text>
+            )}
+
             <Field.Root required width="full">
               <Field.Label color="white">
                 Name <Field.RequiredIndicator />
@@ -137,7 +136,7 @@ const CreateAccount = () => {
               variant="ghost" 
               color="white" 
               width="full"
-              onClick={() => navigate('/login')}
+              onClick={() => navigate('/')}
             >
               Back to Login
             </Button>
