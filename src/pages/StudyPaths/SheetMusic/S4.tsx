@@ -2,19 +2,17 @@ import { Box, Button, Icon, Progress, Text } from "@chakra-ui/react";
 import { ChevronLeft } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import { useProgress } from "@/hooks/useProgress";
 
 const S4 = () => {
   const navigate = useNavigate();
+  const { markLessonCompleted } = useProgress();
   const [page, setPage] = useState(1);
 
   const totalPages = 3;
 
-  const markAsCompleted = () => {
-    const completed = JSON.parse(localStorage.getItem('completedLessons') || '[]');
-    if (!completed.includes('s4')) {
-      completed.push('s4');
-      localStorage.setItem('completedLessons', JSON.stringify(completed));
-    }
+  const markAsCompleted = async () => {
+    await markLessonCompleted('s4');
     navigate(-1);
   };
 

@@ -2,6 +2,7 @@ import { Box, Button, Icon, Progress, Text } from "@chakra-ui/react";
 import { ChevronLeft } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import { useProgress } from "@/hooks/useProgress";
 
 interface Question {
   question: string;
@@ -54,6 +55,7 @@ const questions: Question[] = [
 
 const CTest = () => {
   const navigate = useNavigate();
+  const { markLessonCompleted } = useProgress();
   const [page, setPage] = useState(1);
   const [selectedOption, setSelectedOption] = useState<null | number>(null);
   const [isCorrect, setIsCorrect] = useState<null | boolean>(null);
@@ -79,12 +81,8 @@ const CTest = () => {
     setIsCorrect(null);
   };
 
-  const markAsCompleted = () => {
-    const completed = JSON.parse(localStorage.getItem('completedLessons') || '[]');
-    if (!completed.includes('ctest')) {
-      completed.push('ctest');
-      localStorage.setItem('completedLessons', JSON.stringify(completed));
-    }
+  const markAsCompleted = async () => {
+    await markLessonCompleted('ctest');
     navigate(-1);
   };
 

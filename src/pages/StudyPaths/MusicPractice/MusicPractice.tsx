@@ -1,19 +1,11 @@
 import { Box, Icon, Text } from "@chakra-ui/react";
 import { ChevronLeft, Check, Lock } from "lucide-react";
 import { useNavigate } from "react-router";
-import { useEffect, useState } from "react";
+import { useProgress } from "@/hooks/useProgress";
 
 const MusicPractice = () => {
   const navigate = useNavigate();
-  const [completedLessons, setCompletedLessons] = useState<string[]>([]);
-
-  useEffect(() => {
-    // Load completed lessons from localStorage
-    const completed = localStorage.getItem('completedLessons');
-    if (completed) {
-      setCompletedLessons(JSON.parse(completed));
-    }
-  }, []);
+  const { completedLessons } = useProgress();
 
   const isLessonCompleted = (lessonId: string) => {
     return completedLessons.includes(lessonId);
@@ -36,10 +28,6 @@ const MusicPractice = () => {
         return false; // First song is always unlocked
       case 'song2':
         return !isLessonCompleted('twinkle');
-      case 'song3':
-        return !isLessonCompleted('song2');
-      case 'song4':
-        return !isLessonCompleted('song3');
       default:
         return false;
     }
@@ -108,48 +96,16 @@ const MusicPractice = () => {
           cursor={isLessonLocked('song2') ? 'not-allowed' : 'pointer'}
           opacity={isLessonLocked('song2') ? 0.5 : 1}
         >
-          <Text color="#2D0C57" fontWeight="bold">Em breve: Parabéns pra Você</Text>
-          <Icon color="#2D0C57">
-            <Lock />
-          </Icon>
-        </Box>
-        <Box
-          width="100%"
-          backgroundColor="#FFFFFF"
-          borderColor="#D9D0E3"
-          borderWidth="1px"
-          padding="1rem"
-          marginBottom="1rem"
-          onClick={() => handleLessonClick('/music-practice/song3', 'song3')}
-          display="flex"
-          justifyContent="space-between"
-          alignItems="center"
-          cursor={isLessonLocked('song3') ? 'not-allowed' : 'pointer'}
-          opacity={isLessonLocked('song3') ? 0.5 : 1}
-        >
-          <Text color="#2D0C57" fontWeight="bold">Em breve: O Cravo e a Rosa</Text>
-          <Icon color="#2D0C57">
-            <Lock />
-          </Icon>
-        </Box>
-        <Box
-          width="100%"
-          backgroundColor="#FFFFFF"
-          borderColor="#D9D0E3"
-          borderWidth="1px"
-          padding="1rem"
-          marginBottom="1rem"
-          onClick={() => handleLessonClick('/music-practice/song4', 'song4')}
-          display="flex"
-          justifyContent="space-between"
-          alignItems="center"
-          cursor={isLessonLocked('song4') ? 'not-allowed' : 'pointer'}
-          opacity={isLessonLocked('song4') ? 0.5 : 1}
-        >
-          <Text color="#2D0C57" fontWeight="bold">Em breve: Ciranda Cirandinha</Text>
-          <Icon color="#2D0C57">
-            <Lock />
-          </Icon>
+          <Text color="#2D0C57" fontWeight="bold">Parabéns pra Você</Text>
+          {isLessonCompleted('song2') ? (
+            <Icon color="#0BCE83">
+              <Check />
+            </Icon>
+          ) : isLessonLocked('song2') && (
+            <Icon color="#2D0C57">
+              <Lock />
+            </Icon>
+          )}
         </Box>
       </Box>
     </Box>

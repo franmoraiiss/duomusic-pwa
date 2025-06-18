@@ -5,8 +5,6 @@ import { Piano, MidiNumbers } from 'react-piano';
 import 'react-piano/dist/styles.css';
 import { ChevronLeft } from 'lucide-react';
 import { useNavigate } from 'react-router';
-import { useState } from 'react';
-import { midiNumberToNoteName } from '@/utils/note-utils';
 
 const audioContext = new window.AudioContext();
 const soundfontHostname = 'https://d1pzp51pvbm36p.cloudfront.net';
@@ -24,15 +22,6 @@ const noteRange = {
 
 const PianoPlayground = () => {
   const navigate = useNavigate();
-  const [currentNote, setCurrentNote] = useState<string | null>(null);
-
-  const handlePlayNote = (midiNumber: number) => {
-    setCurrentNote(midiNumberToNoteName(midiNumber));
-  };
-
-  const handleStopNote = () => {
-    setCurrentNote(null);
-  };
 
   return (
     <>
@@ -68,15 +57,6 @@ const PianoPlayground = () => {
           >
             Playground
           </Text>
-          {currentNote && (
-            <Text
-              color="#2D0C57"
-              fontSize="2rem"
-              fontWeight="bold"
-            >
-              {currentNote}
-            </Text>
-          )}
         </Box>
         <Box
           display="flex"
@@ -90,14 +70,8 @@ const PianoPlayground = () => {
             render={({ isLoading, playNote, stopNote }: PianoProps) => (
               <Piano
                 noteRange={noteRange}
-                playNote={(midiNumber: number) => {
-                  playNote(midiNumber);
-                  handlePlayNote(midiNumber);
-                }}
-                stopNote={(midiNumber: number) => {
-                  stopNote(midiNumber);
-                  handleStopNote();
-                }}
+                playNote={playNote}
+                stopNote={stopNote}
                 disabled={isLoading}
               />
             )}

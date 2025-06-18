@@ -2,32 +2,60 @@ import { Progress, Button, Box, Icon, Text } from "@chakra-ui/react";
 import { ChevronLeft } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import { useProgress } from "@/hooks/useProgress";
 
-const questions = [
+interface Question {
+  question: string;
+  options: string[];
+  correctIndex: number;
+}
+
+const questions: Question[] = [
   {
     question: "1. Quais são as sete notas musicais naturais usadas na música ocidental?",
-    options: ["A) Lá, Si, Dó, Ré, Mi, Fá, Fá#", "B) Dó, Ré, Mi, Fá, Sol, Lá, Si", "C) Sol, Lá, Si, Dó, Ré, Mi, Fá#", "D) Dó, Ré, Mi, Fá, Sol, Lá, Dó"],
-    correctIndex: 1,
+    options: [
+      "A) Lá, Si, Dó, Ré, Mi, Fá, Fá#",
+      "B) Dó, Ré, Mi, Fá, Sol, Lá, Si", 
+      "C) Sol, Lá, Si, Dó, Ré, Mi, Fá#",
+      "D) Dó, Ré, Mi, Fá, Sol, Lá, Dó"
+    ],
+    correctIndex: 1
   },
   {
     question: "2. Qual é a função da clave de sol na pauta musical?",
-    options: ["A) Indicar o ritmo da música", "B) Mostrar onde ficam os silêncios", "C) Determinar que as notas serão lidas na região aguda", "D) Marcar o final da música"],
-    correctIndex: 2,
+    options: [
+      "A) Indicar o ritmo da música",
+      "B) Mostrar onde ficam os silêncios",
+      "C) Determinar que as notas serão lidas na região aguda",
+      "D) Marcar o final da música"
+    ],
+    correctIndex: 2
   },
   {
     question: "3. O que é uma escala musical?",
-    options: ["A) Um conjunto de acordes tocados aleatoriamente", "B) Um tipo de instrumento de percussão", "C) Um padrão rítmico usado em compassos compostos", "D) Uma sequência organizada de notas em ordem de altura"],
-    correctIndex: 3,
+    options: [
+      "A) Um conjunto de acordes tocados aleatoriamente",
+      "B) Um tipo de instrumento de percussão",
+      "C) Um padrão rítmico usado em compassos compostos",
+      "D) Uma sequência organizada de notas em ordem de altura"
+    ],
+    correctIndex: 3
   },
   {
     question: "4. Quais notas formam o acorde de Dó maior (tríade)?",
-    options: ["A) Dó, Fá, Lá", "B) Dó, Ré, Mi", "C) Dó, Mi, Sol", "D) Dó, Sol, Si"],
-    correctIndex: 2,
+    options: [
+      "A) Dó, Fá, Lá",
+      "B) Dó, Ré, Mi",
+      "C) Dó, Mi, Sol",
+      "D) Dó, Sol, Si"
+    ],
+    correctIndex: 2
   }
-]
+];
 
 const BTest = () => {
   const navigate = useNavigate();
+  const { markLessonCompleted } = useProgress();
   const [page, setPage] = useState(1);
 
   const [selectedOption, setSelectedOption] = useState<null | number>(null);
@@ -54,12 +82,8 @@ const BTest = () => {
     setIsCorrect(null);
   };
 
-  const markAsCompleted = () => {
-    const completed = JSON.parse(localStorage.getItem('completedLessons') || '[]');
-    if (!completed.includes('btest')) {
-      completed.push('btest');
-      localStorage.setItem('completedLessons', JSON.stringify(completed));
-    }
+  const markAsCompleted = async () => {
+    await markLessonCompleted('btest');
     navigate(-1);
   };
 

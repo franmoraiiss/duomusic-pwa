@@ -1,4 +1,4 @@
-import { StrictMode } from 'react'
+// import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { Route, Routes } from 'react-router'
 import { BrowserRouter } from "react-router";
@@ -55,11 +55,11 @@ import { STest } from './pages/StudyPaths/SheetMusic/STest.tsx';
 import { MusicPractice } from './pages/StudyPaths/MusicPractice/MusicPractice.tsx';
 import { Twinkle } from './pages/StudyPaths/MusicPractice/Twinkle.tsx';
 import { ParabensVoce } from './pages/StudyPaths/MusicPractice/ParabensVoce.tsx';
-import { CravoRosa } from './pages/StudyPaths/MusicPractice/CravoRosa.tsx';
-import { CirandaCirandinha } from './pages/StudyPaths/MusicPractice/CirandaCirandinha.tsx';
+import { AIExercise } from './pages/StudyPaths/AIExercise/AIExercise.tsx';
+import { AITest } from './pages/StudyPaths/AIExercise/AITest.tsx';
 
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
+  // <StrictMode>
     <Provider>
       <BrowserRouter>
         <Routes>
@@ -108,10 +108,10 @@ createRoot(document.getElementById('root')!).render(
           <Route path='/music-practice' element={<MusicPractice />} />
           <Route path='/music-practice/twinkle' element={<Twinkle />} />
           <Route path='/music-practice/song2' element={<ParabensVoce />} />
-          <Route path='/music-practice/song3' element={<CravoRosa />} />
-          <Route path='/music-practice/song4' element={<CirandaCirandinha />} />
+          <Route path='/ai-exercise' element={<AIExercise />} />
+          <Route path='/ai-exercise/test/:topicId' element={<AITest />} />
         </Routes>
       </BrowserRouter>
     </Provider>
-  </StrictMode>,
+  // </StrictMode>,
 )

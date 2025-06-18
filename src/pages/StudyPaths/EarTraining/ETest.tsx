@@ -2,20 +2,31 @@ import { Progress, Button, Box, Icon, Text } from "@chakra-ui/react";
 import { ChevronLeft } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import { useProgress } from "@/hooks/useProgress";
 
 const questions = [
   {
-    question: "1. Qual é a principal característica de um intervalo de oitava?",
+    question: "1. Qual é o primeiro passo para reconhecer notas no piano?",
     options: [
-      "A) São duas notas diferentes tocadas simultaneamente",
-      "B) É a mesma nota tocada em alturas diferentes",
-      "C) São três notas tocadas em sequência",
-      "D) É um intervalo que soa dissonante"
+      "A) Tocar todas as notas ao mesmo tempo",
+      "B) Começar com notas do meio do piano e cantar junto",
+      "C) Tocar apenas acordes",
+      "D) Usar apenas notas graves"
     ],
     correctIndex: 1,
   },
   {
-    question: "2. Como identificar um acorde maior?",
+    question: "2. O que é um intervalo de oitava?",
+    options: [
+      "A) Duas notas diferentes tocadas simultaneamente",
+      "B) A mesma nota tocada em alturas diferentes",
+      "C) Três notas tocadas em sequência",
+      "D) Um intervalo que soa dissonante"
+    ],
+    correctIndex: 1,
+  },
+  {
+    question: "3. Como identificar um acorde maior pelo som?",
     options: [
       "A) Soa mais tenso e dissonante",
       "B) Tem quatro notas tocadas juntas",
@@ -25,7 +36,7 @@ const questions = [
     correctIndex: 2,
   },
   {
-    question: "3. O que é importante observar ao tentar reconhecer uma melodia?",
+    question: "4. O que é importante observar ao reconhecer uma melodia?",
     options: [
       "A) Apenas o volume das notas",
       "B) Somente o ritmo",
@@ -33,21 +44,12 @@ const questions = [
       "D) A direção e os intervalos entre as notas"
     ],
     correctIndex: 3,
-  },
-  {
-    question: "4. Qual é a melhor maneira de praticar o reconhecimento de notas?",
-    options: [
-      "A) Tocar todas as notas ao mesmo tempo",
-      "B) Começar com intervalos complexos",
-      "C) Praticar uma nota por vez e cantar junto",
-      "D) Tocar apenas acordes"
-    ],
-    correctIndex: 2,
   }
 ];
 
 const ETest = () => {
   const navigate = useNavigate();
+  const { markLessonCompleted } = useProgress();
   const [page, setPage] = useState(1);
 
   const [selectedOption, setSelectedOption] = useState<null | number>(null);
@@ -74,12 +76,8 @@ const ETest = () => {
     setIsCorrect(null);
   };
 
-  const markAsCompleted = () => {
-    const completed = JSON.parse(localStorage.getItem('completedLessons') || '[]');
-    if (!completed.includes('etest')) {
-      completed.push('etest');
-      localStorage.setItem('completedLessons', JSON.stringify(completed));
-    }
+  const markAsCompleted = async () => {
+    await markLessonCompleted('etest');
     navigate(-1);
   };
 

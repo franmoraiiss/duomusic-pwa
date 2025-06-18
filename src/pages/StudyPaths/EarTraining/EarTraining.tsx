@@ -1,23 +1,11 @@
 import { Box, Icon, Text } from "@chakra-ui/react";
 import { ChevronLeft, Check, Lock } from "lucide-react";
 import { useNavigate } from "react-router";
-import { useEffect, useState } from "react";
+import { useProgress } from "@/hooks/useProgress";
 
 const EarTraining = () => {
   const navigate = useNavigate();
-  const [completedLessons, setCompletedLessons] = useState<string[]>([]);
-
-  useEffect(() => {
-    // Load completed lessons from localStorage
-    const completed = localStorage.getItem('completedLessons');
-    if (completed) {
-      const parsedCompleted = JSON.parse(completed);
-      setCompletedLessons(parsedCompleted);
-      console.log('Loaded completed lessons:', parsedCompleted);
-      console.log('Basic Theory completed:', parsedCompleted.includes('btest'));
-      console.log('Chords completed:', parsedCompleted.includes('ctest'));
-    }
-  }, []);
+  const { completedLessons } = useProgress();
 
   const isLessonCompleted = (lessonId: string) => {
     return completedLessons.includes(lessonId);

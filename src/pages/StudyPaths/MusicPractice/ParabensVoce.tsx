@@ -1,10 +1,11 @@
 import { Box, Button, Icon, Text } from "@chakra-ui/react";
 import { ChevronLeft, Play, Music } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router";
 import { Piano, MidiNumbers } from 'react-piano';
 import 'react-piano/dist/styles.css';
 import SoundfontProvider from "@/providers/sound-provider";
+import { useProgress } from "@/hooks/useProgress";
 
 const audioContext = new window.AudioContext();
 const soundfontHostname = 'https://d1pzp51pvbm36p.cloudfront.net';
@@ -16,33 +17,31 @@ interface Note {
 
 // Parabéns pra Você in C Major
 const song: Note[] = [
-  { key: MidiNumbers.fromNote('C4'), duration: 250 }, // Pa-
-  { key: MidiNumbers.fromNote('C4'), duration: 250 }, // ra-
-  { key: MidiNumbers.fromNote('D4'), duration: 500 }, // béns
-  { key: MidiNumbers.fromNote('C4'), duration: 500 }, // pra
-  { key: MidiNumbers.fromNote('F4'), duration: 500 }, // vo-
-  { key: MidiNumbers.fromNote('E4'), duration: 1000 }, // cê
-  { key: MidiNumbers.fromNote('C4'), duration: 250 }, // Nes-
-  { key: MidiNumbers.fromNote('C4'), duration: 250 }, // ta
-  { key: MidiNumbers.fromNote('D4'), duration: 500 }, // da-
-  { key: MidiNumbers.fromNote('C4'), duration: 500 }, // ta
-  { key: MidiNumbers.fromNote('G4'), duration: 500 }, // que-
-  { key: MidiNumbers.fromNote('F4'), duration: 1000 }, // ri-
-  { key: MidiNumbers.fromNote('C4'), duration: 250 }, // da
-  { key: MidiNumbers.fromNote('C4'), duration: 250 }, // Mui-
-  { key: MidiNumbers.fromNote('C5'), duration: 500 }, // tas
-  { key: MidiNumbers.fromNote('A4'), duration: 500 }, // fe-
-  { key: MidiNumbers.fromNote('F4'), duration: 500 }, // li-
-  { key: MidiNumbers.fromNote('E4'), duration: 500 }, // ci-
-  { key: MidiNumbers.fromNote('D4'), duration: 1000 }, // da-
-  { key: MidiNumbers.fromNote('Bb4'), duration: 250 }, // des
-  { key: MidiNumbers.fromNote('Bb4'), duration: 250 }, // Mui-
-  { key: MidiNumbers.fromNote('A4'), duration: 500 }, // tos
-  { key: MidiNumbers.fromNote('F4'), duration: 500 }, // a-
-  { key: MidiNumbers.fromNote('G4'), duration: 500 }, // nos
-  { key: MidiNumbers.fromNote('F4'), duration: 1000 }, // de
-  { key: MidiNumbers.fromNote('C4'), duration: 500 }, // vi-
-  { key: MidiNumbers.fromNote('F4'), duration: 1000 }, // da
+  { key: MidiNumbers.fromNote('C4'), duration: 250 }, 
+  { key: MidiNumbers.fromNote('C4'), duration: 250 }, 
+  { key: MidiNumbers.fromNote('D4'), duration: 500 }, 
+  { key: MidiNumbers.fromNote('C4'), duration: 500 }, 
+  { key: MidiNumbers.fromNote('F4'), duration: 500 }, 
+  { key: MidiNumbers.fromNote('E4'), duration: 1000 }, 
+  { key: MidiNumbers.fromNote('C4'), duration: 250 }, 
+  { key: MidiNumbers.fromNote('C4'), duration: 250 }, 
+  { key: MidiNumbers.fromNote('D4'), duration: 500 }, 
+  { key: MidiNumbers.fromNote('C4'), duration: 500 }, 
+  { key: MidiNumbers.fromNote('G4'), duration: 500 }, 
+  { key: MidiNumbers.fromNote('F4'), duration: 1000 }, 
+  { key: MidiNumbers.fromNote('C4'), duration: 250 }, 
+  { key: MidiNumbers.fromNote('C4'), duration: 250 }, 
+  { key: MidiNumbers.fromNote('C5'), duration: 500 }, 
+  { key: MidiNumbers.fromNote('A4'), duration: 500 }, 
+  { key: MidiNumbers.fromNote('F4'), duration: 500 }, 
+  { key: MidiNumbers.fromNote('E4'), duration: 500 }, 
+  { key: MidiNumbers.fromNote('D4'), duration: 1000 }, 
+  { key: MidiNumbers.fromNote('Bb4'), duration: 250 }, 
+  { key: MidiNumbers.fromNote('Bb4'), duration: 250 }, 
+  { key: MidiNumbers.fromNote('A4'), duration: 500 }, 
+  { key: MidiNumbers.fromNote('F4'), duration: 500 }, 
+  { key: MidiNumbers.fromNote('G4'), duration: 500 },
+  { key: MidiNumbers.fromNote('F4'), duration: 1000 },
 ];
 
 interface SoundfontProviderProps {
@@ -58,40 +57,64 @@ const noteRange = {
 
 const ParabensVoce = () => {
   const navigate = useNavigate();
+  const { markLessonCompleted } = useProgress();
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentNoteIndex, setCurrentNoteIndex] = useState(-1);
   const [userSequence, setUserSequence] = useState<number[]>([]);
   const [isPracticeMode, setIsPracticeMode] = useState(false);
   const [activeNotes, setActiveNotes] = useState<number[]>([]);
   const [showSuccess, setShowSuccess] = useState(false);
+  
+  // Refs to track timeouts for cleanup
+  const timeoutRefs = useRef<NodeJS.Timeout[]>([]);
+
+  // Cleanup function to clear all timeouts
+  const clearAllTimeouts = () => {
+    timeoutRefs.current.forEach(timeoutId => clearTimeout(timeoutId));
+    timeoutRefs.current = [];
+  };
+
+  // Cleanup on component unmount
+  useEffect(() => {
+    return () => {
+      clearAllTimeouts();
+    };
+  }, []);
 
   const playSong = async (playNote: (midiNumber: number) => void, stopNote: (midiNumber: number) => void) => {
     if (isPlaying) return;
+    
+    // Clear any existing timeouts
+    clearAllTimeouts();
+    
     setIsPlaying(true);
     setCurrentNoteIndex(-1);
 
     let time = 0;
     for (let i = 0; i < song.length; i++) {
       const note = song[i];
-      setTimeout(() => {
+      const timeoutId = setTimeout(() => {
         playNote(note.key);
         setCurrentNoteIndex(i);
         setActiveNotes([note.key]);
-        setTimeout(() => {
+        const stopTimeoutId = setTimeout(() => {
           stopNote(note.key);
           setActiveNotes([]);
         }, note.duration - 50);
+        timeoutRefs.current.push(stopTimeoutId);
       }, time);
+      timeoutRefs.current.push(timeoutId);
       time += note.duration;
     }
 
-    setTimeout(() => {
+    const finalTimeoutId = setTimeout(() => {
       setIsPlaying(false);
       setActiveNotes([]);
     }, time);
+    timeoutRefs.current.push(finalTimeoutId);
   };
 
-  const handleNotePlay = (midiNumber: number) => {
+  const handleNotePlay = async (midiNumber: number) => {
     if (!isPracticeMode || isPlaying) return;
 
     const newSequence = [...userSequence, midiNumber];
@@ -109,11 +132,7 @@ const ParabensVoce = () => {
 
     // Check if completed
     if (newSequence.length === song.length) {
-      const completed = JSON.parse(localStorage.getItem('completedLessons') || '[]');
-      if (!completed.includes('song2')) {
-        completed.push('song2');
-        localStorage.setItem('completedLessons', JSON.stringify(completed));
-      }
+      await markLessonCompleted('song2');
       
       // Show success message
       setShowSuccess(true);
@@ -128,6 +147,14 @@ const ParabensVoce = () => {
   const startPractice = () => {
     setIsPracticeMode(true);
     setUserSequence([]);
+  };
+
+  const handleBackNavigation = () => {
+    // Clear all timeouts to stop music
+    clearAllTimeouts();
+    setIsPlaying(false);
+    setActiveNotes([]);
+    navigate(-1);
   };
 
   return (
@@ -174,7 +201,7 @@ const ParabensVoce = () => {
         top="0"
         zIndex="1000"
       >
-        <Icon margin="1rem" onClick={() => navigate(-1)}>
+        <Icon margin="1rem" onClick={handleBackNavigation}>
           <ChevronLeft />
         </Icon>
       </Box>

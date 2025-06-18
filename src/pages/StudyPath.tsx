@@ -7,6 +7,7 @@ import PianoPlaygroundImage from "@/assets/piano-playground.jpg"
 import RhythmImage from "@/assets/rhythm.jpg"
 import SheetMusicImage from "@/assets/sheet-music.jpg"
 import MusicPracticeImage from "@/assets/music-practice.jpg"
+import AIExerciseImage from "@/assets/ai-test.jpg"
 import { SingleClass } from "@/components/single-class";
 import { ClassSeparator } from "@/components/class-separator";
 import { Grid2x2, User, LogOut } from "lucide-react";
@@ -14,12 +15,13 @@ import { OrientationWarning } from "@/components/orientation-warning";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { useStreak } from "@/hooks/useStreak";
+import { useProgress } from "@/hooks/useProgress";
 
 const StudyPath = () => {
-  const [completedLessons, setCompletedLessons] = useState<string[]>([]);
+  const { completedLessons, markLessonCompleted } = useProgress();
   const [exerciseProgress, setExerciseProgress] = useState({ percentage: 0, completed: 0, total: 5 });
   const [moduleProgress, setModuleProgress] = useState({ percentage: 0, completed: 0, total: 6 });
-  const { streak, incrementStreak } = useStreak();
+  const { streak, topUsers, updateStreak } = useStreak();
   const navigate = useNavigate();
 
   const calculateExerciseProgress = (completedLessons: string[]) => {
@@ -47,19 +49,6 @@ const StudyPath = () => {
       total: totalModules
     };
   };
-
-  useEffect(() => {
-    // Load completed lessons from localStorage
-    const completed = localStorage.getItem('completedLessons');
-    if (completed) {
-      const loadedLessons = JSON.parse(completed);
-      setCompletedLessons(loadedLessons);
-      
-      // Calculate progress when lessons are loaded
-      setExerciseProgress(calculateExerciseProgress(loadedLessons));
-      setModuleProgress(calculateModuleProgress(loadedLessons));
-    }
-  }, []);
 
   // Update progress whenever completedLessons changes
   useEffect(() => {
@@ -91,11 +80,9 @@ const StudyPath = () => {
     }
   };
 
-  const handleLessonComplete = (lessonId: string) => {
-    const updatedLessons = [...completedLessons, lessonId];
-    setCompletedLessons(updatedLessons);
-    localStorage.setItem('completedLessons', JSON.stringify(updatedLessons));
-    incrementStreak(); // Increment streak when a lesson is completed
+  const handleLessonComplete = async (lessonId: string) => {
+    await markLessonCompleted(lessonId);
+    updateStreak(); // Update streak when a lesson is completed
   };
 
   return (
@@ -184,6 +171,16 @@ const StudyPath = () => {
 
               <Box marginTop="3rem">
                 <SingleClass
+                  image={AIExerciseImage}
+                  text="Exercite com IA"
+                  classPath="/ai-exercise"
+                  moduleId="ai-exercise"
+                  isLocked={false}
+                />
+              </Box>
+
+              <Box marginTop="3rem">
+                <SingleClass
                   image={Diapason}
                   text="Afinador"
                   classPath="/tuner"
@@ -252,11 +249,11 @@ const StudyPath = () => {
 
               <Box paddingY="1rem">
                 <Text>Ranking semanal:</Text>
-                <Text fontWeight="light" fontSize="1">1. {localStorage.getItem('user_name') || 'Você'} ({streak} 🔥)</Text>
-                <Text fontWeight="light" fontSize="1">2. User (1 🔥)</Text>
-                <Text fontWeight="light" fontSize="1">3. User (1 🔥)</Text>
-                <Text fontWeight="light" fontSize="1">4. User (1 🔥)</Text>
-                <Text fontWeight="light" fontSize="1">5. User (1 🔥)</Text>
+                {topUsers.map((user, index) => (
+                  <Text key={user.id} fontWeight="light" fontSize="1">
+                    {index + 1}. {user.name} ({user.currentStreak} 🔥)
+                  </Text>
+                ))}
               </Box>
 
               <Box paddingY="2rem">

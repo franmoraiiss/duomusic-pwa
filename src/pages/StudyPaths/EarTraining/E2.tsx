@@ -5,6 +5,7 @@ import { useNavigate } from "react-router";
 import { Piano, MidiNumbers } from 'react-piano';
 import 'react-piano/dist/styles.css';
 import SoundfontProvider from "@/providers/sound-provider";
+import { useProgress } from "@/hooks/useProgress";
 
 const audioContext = new window.AudioContext();
 const soundfontHostname = 'https://d1pzp51pvbm36p.cloudfront.net';
@@ -22,16 +23,13 @@ const noteRange = {
 
 const E2 = () => {
   const navigate = useNavigate();
+  const { markLessonCompleted } = useProgress();
   const [page, setPage] = useState(1);
 
   const totalPages = 3;
 
-  const markAsCompleted = () => {
-    const completed = JSON.parse(localStorage.getItem('completedLessons') || '[]');
-    if (!completed.includes('e2')) {
-      completed.push('e2');
-      localStorage.setItem('completedLessons', JSON.stringify(completed));
-    }
+  const markAsCompleted = async () => {
+    await markLessonCompleted('e2');
     navigate(-1);
   };
 

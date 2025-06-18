@@ -1,10 +1,11 @@
 import { Box, Button, Icon, Text } from "@chakra-ui/react";
 import { ChevronLeft, Play, Music } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router";
 import { Piano, MidiNumbers } from 'react-piano';
 import 'react-piano/dist/styles.css';
 import SoundfontProvider from "@/providers/sound-provider";
+import { useProgress } from "@/hooks/useProgress";
 
 const audioContext = new window.AudioContext();
 const soundfontHostname = 'https://d1pzp51pvbm36p.cloudfront.net';
@@ -45,40 +46,64 @@ const noteRange = {
 
 const Twinkle = () => {
   const navigate = useNavigate();
+  const { markLessonCompleted } = useProgress();
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentNoteIndex, setCurrentNoteIndex] = useState(-1);
   const [userSequence, setUserSequence] = useState<number[]>([]);
   const [isPracticeMode, setIsPracticeMode] = useState(false);
   const [activeNotes, setActiveNotes] = useState<number[]>([]);
   const [showSuccess, setShowSuccess] = useState(false);
+  
+  // Refs to track timeouts for cleanup
+  const timeoutRefs = useRef<NodeJS.Timeout[]>([]);
+
+  // Cleanup function to clear all timeouts
+  const clearAllTimeouts = () => {
+    timeoutRefs.current.forEach(timeoutId => clearTimeout(timeoutId));
+    timeoutRefs.current = [];
+  };
+
+  // Cleanup on component unmount
+  useEffect(() => {
+    return () => {
+      clearAllTimeouts();
+    };
+  }, []);
 
   const playSong = async (playNote: (midiNumber: number) => void, stopNote: (midiNumber: number) => void) => {
     if (isPlaying) return;
+    
+    // Clear any existing timeouts
+    clearAllTimeouts();
+    
     setIsPlaying(true);
     setCurrentNoteIndex(-1);
 
     let time = 0;
     for (let i = 0; i < song.length; i++) {
       const note = song[i];
-      setTimeout(() => {
+      const timeoutId = setTimeout(() => {
         playNote(note.key);
         setCurrentNoteIndex(i);
         setActiveNotes([note.key]);
-        setTimeout(() => {
+        const stopTimeoutId = setTimeout(() => {
           stopNote(note.key);
           setActiveNotes([]);
         }, note.duration - 50);
+        timeoutRefs.current.push(stopTimeoutId);
       }, time);
+      timeoutRefs.current.push(timeoutId);
       time += note.duration;
     }
 
-    setTimeout(() => {
+    const finalTimeoutId = setTimeout(() => {
       setIsPlaying(false);
       setActiveNotes([]);
     }, time);
+    timeoutRefs.current.push(finalTimeoutId);
   };
 
-  const handleNotePlay = (midiNumber: number) => {
+  const handleNotePlay = async (midiNumber: number) => {
     if (!isPracticeMode || isPlaying) return;
 
     const newSequence = [...userSequence, midiNumber];
@@ -96,11 +121,7 @@ const Twinkle = () => {
 
     // Check if completed
     if (newSequence.length === song.length) {
-      const completed = JSON.parse(localStorage.getItem('completedLessons') || '[]');
-      if (!completed.includes('twinkle')) {
-        completed.push('twinkle');
-        localStorage.setItem('completedLessons', JSON.stringify(completed));
-      }
+      await markLessonCompleted('twinkle');
       
       // Show success message
       setShowSuccess(true);
@@ -115,6 +136,14 @@ const Twinkle = () => {
   const startPractice = () => {
     setIsPracticeMode(true);
     setUserSequence([]);
+  };
+
+  const handleBackNavigation = () => {
+    // Clear all timeouts to stop music
+    clearAllTimeouts();
+    setIsPlaying(false);
+    setActiveNotes([]);
+    navigate(-1);
   };
 
   return (
@@ -161,7 +190,7 @@ const Twinkle = () => {
         top="0"
         zIndex="1000"
       >
-        <Icon margin="1rem" onClick={() => navigate(-1)}>
+        <Icon margin="1rem" onClick={handleBackNavigation}>
           <ChevronLeft />
         </Icon>
       </Box>
