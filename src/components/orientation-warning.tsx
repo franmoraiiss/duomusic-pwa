@@ -32,6 +32,8 @@ const OrientationWarning = ({ requiredOrientation = 'landscape' }: OrientationWa
 
   if (!isMismatched) return null;
 
+  const orientationText = requiredOrientation === 'landscape' ? 'paisagem' : 'retrato';
+
   return (
     <div style={{
       position: 'fixed',
@@ -46,7 +48,7 @@ const OrientationWarning = ({ requiredOrientation = 'landscape' }: OrientationWa
       padding: '1rem',
     }}>
       <p>
-        Please rotate your device to <strong>{requiredOrientation}</strong> mode to continue using this app.
+        Por favor, gire seu dispositivo para o modo <strong>{orientationText}</strong> para continuar usando este aplicativo.
       </p>
     </div>
   );
