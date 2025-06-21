@@ -17,20 +17,20 @@ interface Note {
 
 // Twinkle Twinkle Little Star in C Major
 const song: Note[] = [
-  { key: MidiNumbers.fromNote('C4'), duration: 500 }, // Twin-
-  { key: MidiNumbers.fromNote('C4'), duration: 500 }, // -kle
-  { key: MidiNumbers.fromNote('G4'), duration: 500 }, // twin-
-  { key: MidiNumbers.fromNote('G4'), duration: 500 }, // -kle
-  { key: MidiNumbers.fromNote('A4'), duration: 500 }, // lit-
-  { key: MidiNumbers.fromNote('A4'), duration: 500 }, // -tle
-  { key: MidiNumbers.fromNote('G4'), duration: 1000 }, // star
-  { key: MidiNumbers.fromNote('F4'), duration: 500 }, // How
-  { key: MidiNumbers.fromNote('F4'), duration: 500 }, // I
-  { key: MidiNumbers.fromNote('E4'), duration: 500 }, // won-
-  { key: MidiNumbers.fromNote('E4'), duration: 500 }, // -der
-  { key: MidiNumbers.fromNote('D4'), duration: 500 }, // what
-  { key: MidiNumbers.fromNote('D4'), duration: 500 }, // you
-  { key: MidiNumbers.fromNote('C4'), duration: 1000 }, // are
+  { key: MidiNumbers.fromNote('C4'), duration: 500 },
+  { key: MidiNumbers.fromNote('C4'), duration: 500 },
+  { key: MidiNumbers.fromNote('G4'), duration: 500 },
+  { key: MidiNumbers.fromNote('G4'), duration: 500 },
+  { key: MidiNumbers.fromNote('A4'), duration: 500 },
+  { key: MidiNumbers.fromNote('A4'), duration: 500 },
+  { key: MidiNumbers.fromNote('G4'), duration: 1000 },
+  { key: MidiNumbers.fromNote('F4'), duration: 500 },
+  { key: MidiNumbers.fromNote('F4'), duration: 500 },
+  { key: MidiNumbers.fromNote('E4'), duration: 500 },
+  { key: MidiNumbers.fromNote('E4'), duration: 500 },
+  { key: MidiNumbers.fromNote('D4'), duration: 500 },
+  { key: MidiNumbers.fromNote('D4'), duration: 500 },
+  { key: MidiNumbers.fromNote('C4'), duration: 1000 },
 ];
 
 interface SoundfontProviderProps {
@@ -54,7 +54,6 @@ const Twinkle = () => {
   const [activeNotes, setActiveNotes] = useState<number[]>([]);
   const [showSuccess, setShowSuccess] = useState(false);
   
-  // Refs to track timeouts for cleanup
   const timeoutRefs = useRef<NodeJS.Timeout[]>([]);
 
   // Cleanup function to clear all timeouts

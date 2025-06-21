@@ -37,7 +37,6 @@ class StreakService {
         throw new Error('Failed to update streak');
       }
     } else {
-      // For non-logged in users, update streak in localStorage
       const currentStreak = parseInt(localStorage.getItem('userStreak') || '0');
       const lastUpdate = localStorage.getItem('lastStreakUpdate');
       const today = new Date().toDateString();
@@ -61,7 +60,6 @@ class StreakService {
 
       return response.json();
     } else {
-      // For non-logged in users, return their local streak
       const currentStreak = parseInt(localStorage.getItem('userStreak') || '0');
       return [{
         id: 0,
@@ -84,7 +82,6 @@ class StreakService {
       const data: StreakResponse = await response.json();
       return data.currentStreak;
     } else {
-      // For non-logged in users, get streak from localStorage
       return parseInt(localStorage.getItem('userStreak') || '0');
     }
   }

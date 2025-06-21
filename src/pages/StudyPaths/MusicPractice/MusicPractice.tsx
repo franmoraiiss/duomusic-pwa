@@ -12,20 +12,13 @@ const MusicPractice = () => {
   };
 
   const isLessonLocked = (lessonId: string) => {
-    // Check for development unlock flag
-    const devUnlockAll = localStorage.getItem('devUnlockAll');
-    if (devUnlockAll === 'true') {
-      return false;
-    }
-
-    // First verify if sheet music is completed
     if (!completedLessons.includes('stest')) {
       return true;
     }
 
     switch (lessonId) {
       case 'twinkle':
-        return false; // First song is always unlocked
+        return false;
       case 'song2':
         return !isLessonCompleted('twinkle');
       default:

@@ -2,11 +2,6 @@ interface ProgressData {
   completedLessons: string[];
 }
 
-interface ProgressResponse {
-  success: boolean;
-  message: string;
-}
-
 class ProgressService {
   private getHeaders(): Record<string, string> {
     const token = localStorage.getItem('auth_token');
@@ -27,13 +22,11 @@ class ProgressService {
 
   async syncProgress(): Promise<void> {
     if (!this.isLoggedIn()) {
-      console.log('User not logged in, skipping progress sync');
       return;
     }
 
     const completedLessons = localStorage.getItem('completedLessons');
     if (!completedLessons) {
-      console.log('No progress to sync');
       return;
     }
 
@@ -52,17 +45,14 @@ class ProgressService {
         throw new Error('Failed to sync progress');
       }
 
-      const result: ProgressResponse = await response.json();
-      console.log('Progress synced successfully:', result.message);
-    } catch (error) {
-      console.error('Error syncing progress:', error);
-      // Don't throw error to avoid breaking the user experience
+      await response.json();
+    } catch {
+      // Ignore sync errors
     }
   }
 
   async getProgress(): Promise<string[]> {
     if (!this.isLoggedIn()) {
-      // For non-logged in users, return local progress
       const completedLessons = localStorage.getItem('completedLessons');
       return completedLessons ? JSON.parse(completedLessons) : [];
     }
@@ -78,27 +68,22 @@ class ProgressService {
 
       const data: ProgressData = await response.json();
       
-      // Update local storage with server data
       localStorage.setItem('completedLessons', JSON.stringify(data.completedLessons));
       
       return data.completedLessons;
-    } catch (error) {
-      console.error('Error fetching progress:', error);
-      // Fallback to local storage
+    } catch {
       const completedLessons = localStorage.getItem('completedLessons');
       return completedLessons ? JSON.parse(completedLessons) : [];
     }
   }
 
   async updateProgress(lessonId: string): Promise<void> {
-    // First update local storage
     const completed = JSON.parse(localStorage.getItem('completedLessons') || '[]');
     if (!completed.includes(lessonId)) {
       completed.push(lessonId);
       localStorage.setItem('completedLessons', JSON.stringify(completed));
     }
 
-    // Then sync with server if logged in
     await this.syncProgress();
   }
 }

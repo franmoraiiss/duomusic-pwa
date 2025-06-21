@@ -12,9 +12,9 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
       manifest: {
-        name: 'My Awesome App',
-        short_name: 'MyApp',
-        description: 'My Awesome App description',
+        name: 'DuoMusic',
+        short_name: 'DuoMusic',
+        description: 'Aprenda música de forma divertida e interativa',
         theme_color: '#ffffff',
         icons: [
           {

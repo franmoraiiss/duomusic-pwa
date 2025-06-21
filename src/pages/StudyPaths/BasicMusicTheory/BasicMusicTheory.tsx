@@ -14,7 +14,7 @@ const BasicMusicTheory = () => {
   const isLessonLocked = (lessonId: string) => {
     switch (lessonId) {
       case 'b1':
-        return false; // First lesson is always unlocked
+        return false;
       case 'b2':
         return !isLessonCompleted('b1');
       case 'b3':

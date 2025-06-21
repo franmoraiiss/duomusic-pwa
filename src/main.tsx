@@ -1,4 +1,3 @@
-// import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { Route, Routes } from 'react-router'
 import { BrowserRouter } from "react-router";
@@ -57,9 +56,10 @@ import { Twinkle } from './pages/StudyPaths/MusicPractice/Twinkle.tsx';
 import { ParabensVoce } from './pages/StudyPaths/MusicPractice/ParabensVoce.tsx';
 import { AIExercise } from './pages/StudyPaths/AIExercise/AIExercise.tsx';
 import { AITest } from './pages/StudyPaths/AIExercise/AITest.tsx';
+import { StrictMode } from 'react';
 
 createRoot(document.getElementById('root')!).render(
-  // <StrictMode>
+  <StrictMode>
     <Provider>
       <BrowserRouter>
         <Routes>
@@ -113,5 +113,5 @@ createRoot(document.getElementById('root')!).render(
         </Routes>
       </BrowserRouter>
     </Provider>
-  // </StrictMode>,
+  </StrictMode>
 )

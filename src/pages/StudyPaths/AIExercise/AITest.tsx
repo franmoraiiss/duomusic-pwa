@@ -33,8 +33,8 @@ const AITest = () => {
       try {
         const generatedQuestions = await openaiService.generateMusicTheoryQuestions(topicId || 'basic', 10);
         setQuestions(generatedQuestions);
-      } catch (error) {
-        console.error('Error generating questions:', error);
+      } catch {
+        // Ignore generation errors
       } finally {
         setLoading(false);
       }

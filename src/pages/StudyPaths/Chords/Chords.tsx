@@ -12,14 +12,13 @@ const Chords = () => {
   };
 
   const isLessonLocked = (lessonId: string) => {
-    // First verify if basic theory is completed
     if (!completedLessons.includes('btest')) {
       return true;
     }
 
     switch (lessonId) {
       case 'c1':
-        return false; // First lesson is always unlocked
+        return false;
       case 'c2':
         return !isLessonCompleted('c1');
       case 'c3':

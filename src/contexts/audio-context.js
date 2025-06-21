@@ -17,7 +17,6 @@ const AudioContext = {
 
   decodeAudioData(audioData) {
     audioCtx.decodeAudioData(audioData).then(function (decodedData) {
-      // use the decoded data here
     });
   },
 };

@@ -15,7 +15,6 @@ interface Note {
   duration: number;
 }
 
-// Parabéns pra Você in C Major
 const song: Note[] = [
   { key: MidiNumbers.fromNote('C4'), duration: 250 }, 
   { key: MidiNumbers.fromNote('C4'), duration: 250 }, 
@@ -65,16 +64,13 @@ const ParabensVoce = () => {
   const [activeNotes, setActiveNotes] = useState<number[]>([]);
   const [showSuccess, setShowSuccess] = useState(false);
   
-  // Refs to track timeouts for cleanup
   const timeoutRefs = useRef<NodeJS.Timeout[]>([]);
 
-  // Cleanup function to clear all timeouts
   const clearAllTimeouts = () => {
     timeoutRefs.current.forEach(timeoutId => clearTimeout(timeoutId));
     timeoutRefs.current = [];
   };
 
-  // Cleanup on component unmount
   useEffect(() => {
     return () => {
       clearAllTimeouts();
@@ -84,7 +80,6 @@ const ParabensVoce = () => {
   const playSong = async (playNote: (midiNumber: number) => void, stopNote: (midiNumber: number) => void) => {
     if (isPlaying) return;
     
-    // Clear any existing timeouts
     clearAllTimeouts();
     
     setIsPlaying(true);
@@ -120,24 +115,19 @@ const ParabensVoce = () => {
     const newSequence = [...userSequence, midiNumber];
     setUserSequence(newSequence);
 
-    // Check if the sequence is correct
     const targetSequence = song.slice(0, newSequence.length).map(n => n.key);
     const isCorrect = targetSequence.every((note, i) => note === newSequence[i]);
 
     if (!isCorrect) {
-      // Reset if wrong
       setUserSequence([]);
       return;
     }
 
-    // Check if completed
     if (newSequence.length === song.length) {
       await markLessonCompleted('song2');
       
-      // Show success message
       setShowSuccess(true);
       
-      // Navigate back after delay
       setTimeout(() => {
         navigate(-1);
       }, 3000);
@@ -150,7 +140,6 @@ const ParabensVoce = () => {
   };
 
   const handleBackNavigation = () => {
-    // Clear all timeouts to stop music
     clearAllTimeouts();
     setIsPlaying(false);
     setActiveNotes([]);

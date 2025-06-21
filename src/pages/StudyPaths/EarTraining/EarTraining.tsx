@@ -12,24 +12,16 @@ const EarTraining = () => {
   };
 
   const isLessonLocked = (lessonId: string) => {
-    // Check for development unlock flag
-    const devUnlockAll = localStorage.getItem('devUnlockAll');
-    if (devUnlockAll === 'true') {
-      return false;
-    }
-
-    // First verify if basic theory and chords are completed
     const basicTheoryCompleted = completedLessons.includes('btest');
     const chordsCompleted = completedLessons.includes('ctest');
     
     if (!basicTheoryCompleted || !chordsCompleted) {
-      console.log('Prerequisites not met:', { basicTheoryCompleted, chordsCompleted });
       return true;
     }
 
     switch (lessonId) {
       case 'e1':
-        return false; // First lesson is always unlocked
+        return false;
       case 'e2':
         return !isLessonCompleted('e1');
       case 'e3':

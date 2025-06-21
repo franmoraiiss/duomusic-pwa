@@ -15,19 +15,18 @@ export const useStreak = () => {
     try {
       const currentStreak = await streakService.getCurrentStreak();
       setStreak(currentStreak);
-    } catch (error) {
-      console.error('Failed to fetch current streak:', error);
+    } catch {
+      // Ignore fetch errors
     }
   };
 
   const updateStreak = async () => {
     try {
       await streakService.updateStreak();
-      // After updating streak, fetch current streak and top users
       await fetchCurrentStreak();
       await fetchTopUsers();
-    } catch (error) {
-      console.error('Failed to update streak:', error);
+    } catch {
+      // Ignore update errors
     }
   };
 
@@ -35,12 +34,11 @@ export const useStreak = () => {
     try {
       const users = await streakService.getTopUsers();
       setTopUsers(users);
-    } catch (error) {
-      console.error('Failed to fetch top users:', error);
+    } catch {
+      // Ignore fetch errors
     }
   };
 
-  // Fetch current streak and top users when component mounts
   useEffect(() => {
     fetchCurrentStreak();
     fetchTopUsers();

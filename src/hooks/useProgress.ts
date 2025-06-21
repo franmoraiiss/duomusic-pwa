@@ -10,8 +10,8 @@ export const useProgress = () => {
       setIsLoading(true);
       const progress = await progressService.getProgress();
       setCompletedLessons(progress);
-    } catch (error) {
-      console.error('Failed to load progress:', error);
+    } catch {
+      // Ignore load errors
     } finally {
       setIsLoading(false);
     }
@@ -26,20 +26,19 @@ export const useProgress = () => {
         }
         return prev;
       });
-    } catch (error) {
-      console.error('Failed to mark lesson as completed:', error);
+    } catch {
+      // Ignore update errors
     }
   };
 
   const syncProgress = async () => {
     try {
       await progressService.syncProgress();
-    } catch (error) {
-      console.error('Failed to sync progress:', error);
+    } catch {
+      // Ignore sync errors
     }
   };
 
-  // Load progress when component mounts
   useEffect(() => {
     loadProgress();
   }, []);

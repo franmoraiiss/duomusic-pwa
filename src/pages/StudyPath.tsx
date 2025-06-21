@@ -26,7 +26,7 @@ const StudyPath = () => {
   const navigate = useNavigate();
 
   const calculateExerciseProgress = (completedLessons: string[]) => {
-    const totalTests = 5; // btest, ctest, etest, rtest, stest
+    const totalTests = 5;
     const completedTests = ['btest', 'ctest', 'etest', 'rtest', 'stest']
       .filter(test => completedLessons.includes(test)).length;
     const percentage = (completedTests / totalTests) * 100;
@@ -39,7 +39,7 @@ const StudyPath = () => {
   };
 
   const calculateModuleProgress = (completedLessons: string[]) => {
-    const totalModules = 6; // basic-theory, chords, ear-training, rhythm, sheet-music, music-practice
+    const totalModules = 6;
     const completedModules = ['basic-theory', 'chords', 'ear-training', 'rhythm', 'sheet-music', 'music-practice']
       .filter(module => isModuleUnlocked(module, completedLessons)).length;
     const percentage = (completedModules / totalModules) * 100;
@@ -51,31 +51,30 @@ const StudyPath = () => {
     };
   };
 
-  // Update progress whenever completedLessons changes
   useEffect(() => {
     setExerciseProgress(calculateExerciseProgress(completedLessons));
     setModuleProgress(calculateModuleProgress(completedLessons));
   }, [completedLessons]);
 
   const handleLogout = () => {
-    localStorage.clear(); // Clear all localStorage data
-    navigate('/'); // Redirect to login page
+    localStorage.clear();
+    navigate('/');
   };
 
   const isModuleUnlocked = (moduleId: string, lessons: string[]) => {
     switch (moduleId) {
       case 'basic-theory':
-        return true; // First module is always unlocked
+        return true;
       case 'chords':
-        return lessons.includes('btest'); // Unlocked after completing basic theory test
+        return lessons.includes('btest');
       case 'ear-training':
-        return lessons.includes('ctest'); // Will be unlocked after completing chords test
+        return lessons.includes('ctest');
       case 'rhythm':
-        return lessons.includes('etest'); // Will be unlocked after completing ear training test
+        return lessons.includes('etest');
       case 'sheet-music':
-        return lessons.includes('rtest'); // Will be unlocked after completing rhythm test
+        return lessons.includes('rtest');
       case 'music-practice':
-        return lessons.includes('stest'); // Will be unlocked after completing sheet music test
+        return lessons.includes('stest');
       default:
         return true;
     }
@@ -83,7 +82,7 @@ const StudyPath = () => {
 
   const handleLessonComplete = async (lessonId: string) => {
     await markLessonCompleted(lessonId);
-    updateStreak(); // Update streak when a lesson is completed
+    updateStreak();
   };
 
   return (
@@ -115,7 +114,6 @@ const StudyPath = () => {
                 image={StudyPathImage}
                 text="Teoria musical básica"
                 classPath="/basic-music-theory"
-                moduleId="basic-theory"
                 isLocked={!isModuleUnlocked('basic-theory', completedLessons)}
                 onComplete={() => handleLessonComplete('basic-theory')}
               />
@@ -125,7 +123,6 @@ const StudyPath = () => {
                 image={Chords}
                 text="Aprendendo acordes"
                 classPath="/chords"
-                moduleId="chords"
                 isLocked={!isModuleUnlocked('chords', completedLessons)}
                 onComplete={() => handleLessonComplete('chords')}
               />
@@ -135,7 +132,6 @@ const StudyPath = () => {
                 image={EarImage}
                 text="Treinando seu ouvido"
                 classPath="/ear-training"
-                moduleId="ear-training"
                 isLocked={!isModuleUnlocked('ear-training', completedLessons)}
                 onComplete={() => handleLessonComplete('ear-training')}
               />
@@ -145,7 +141,6 @@ const StudyPath = () => {
                 image={RhythmImage}
                 text="Ritmo e Tempo"
                 classPath="/rhythm"
-                moduleId="rhythm"
                 isLocked={!isModuleUnlocked('rhythm', completedLessons)}
                 onComplete={() => handleLessonComplete('rhythm')}
               />
@@ -155,7 +150,6 @@ const StudyPath = () => {
                 image={SheetMusicImage}
                 text="Leitura de Partitura"
                 classPath="/sheet-music"
-                moduleId="sheet-music"
                 isLocked={!isModuleUnlocked('sheet-music', completedLessons)}
                 onComplete={() => handleLessonComplete('sheet-music')}
               />
@@ -165,7 +159,6 @@ const StudyPath = () => {
                 image={MusicPracticeImage}
                 text="Prática Musical"
                 classPath="/music-practice"
-                moduleId="music-practice"
                 isLocked={!isModuleUnlocked('music-practice', completedLessons)}
                 onComplete={() => handleLessonComplete('music-practice')}
               />
@@ -175,7 +168,6 @@ const StudyPath = () => {
                   image={AIExerciseImage}
                   text="Exercite com IA"
                   classPath="/ai-exercise"
-                  moduleId="ai-exercise"
                   isLocked={false}
                 />
               </Box>
@@ -185,7 +177,6 @@ const StudyPath = () => {
                   image={Diapason}
                   text="Afinador"
                   classPath="/tuner"
-                  moduleId="tuner"
                   isLocked={false}
                 />
               </Box>
@@ -195,7 +186,6 @@ const StudyPath = () => {
                   image={PianoPlaygroundImage}
                   text="Piano Playground"
                   classPath="/piano-playground"
-                  moduleId="piano"
                   isLocked={false}
                 />
               </Box>

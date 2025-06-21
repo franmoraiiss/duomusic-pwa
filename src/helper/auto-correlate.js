@@ -8,7 +8,6 @@ export default function autoCorrelate(buf, sampleRate) {
   }
   rms = Math.sqrt(rms / SIZE);
   if (rms < 0.01)
-    // not enough signal
     return -1;
 
   var r1 = 0,

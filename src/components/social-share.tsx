@@ -41,16 +41,15 @@ export const SocialShare = ({ exerciseProgress, moduleProgress, streak, userName
           text: shareText,
           url: appUrl,
         });
-      } catch (error) {
-        console.log('Erro ao compartilhar:', error);
+      } catch {
+        // Ignore share errors
       }
     } else {
-      // Fallback to copying to clipboard
       try {
         await navigator.clipboard.writeText(`${shareText}\n\n${appUrl}`);
         alert('Texto copiado para a área de transferência!');
-      } catch (error) {
-        console.log('Erro ao copiar para a área de transferência:', error);
+      } catch {
+        // Ignore clipboard errors
       }
     }
   };
@@ -60,7 +59,6 @@ export const SocialShare = ({ exerciseProgress, moduleProgress, streak, userName
       <Text fontWeight="bold" marginBottom="1rem">Compartilhar Progresso</Text>
       
       <VStack width="100%">
-        {/* Native Share Button */}
         <Button
           width="full"
           backgroundColor="#0BCE83"
@@ -73,7 +71,6 @@ export const SocialShare = ({ exerciseProgress, moduleProgress, streak, userName
           </HStack>
         </Button>
 
-        {/* Social Media Buttons */}
         <HStack width="100%">
           <Button
             flex="1"

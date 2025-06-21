@@ -29,9 +29,7 @@ export const openaiService = {
       }
 
       return data.questions;
-    } catch (error) {
-      console.error('Error generating questions:', error);
-      // Fallback to default questions if API call fails
+    } catch {
       return [
         {
           question: "1. Quais são as sete notas musicais naturais usadas na música ocidental?",

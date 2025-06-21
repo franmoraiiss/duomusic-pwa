@@ -46,7 +46,6 @@ const Login = () => {
           marginBottom={20}  
         />
         
-        {/* Main no-login button */}
         <Button 
           backgroundColor="green" 
           width="full"
@@ -57,7 +56,6 @@ const Login = () => {
           Entrar sem login
         </Button>
 
-        {/* Email login section */}
         <VStack width="full" gap={4}>
           <Button 
             variant="outline" 

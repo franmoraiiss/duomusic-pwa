@@ -23,7 +23,6 @@ export const useAuth = () => {
       navigate('/welcome');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred during login');
-      console.error('Login failed:', err);
     } finally {
       setIsLoading(false);
     }

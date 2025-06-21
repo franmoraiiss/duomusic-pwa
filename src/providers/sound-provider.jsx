@@ -39,7 +39,6 @@ class SoundfontProvider extends React.Component {
   }
 
   loadInstrument = instrumentName => {
-    // Re-trigger loading state
     this.setState({
       instrument: null,
     });
@@ -82,7 +81,6 @@ class SoundfontProvider extends React.Component {
     });
   };
 
-  // Clear any residual notes that don't get called with stopNote
   stopAllNotes = () => {
     this.props.audioContext.resume().then(() => {
       const activeAudioNodes = Object.values(this.state.activeAudioNodes);

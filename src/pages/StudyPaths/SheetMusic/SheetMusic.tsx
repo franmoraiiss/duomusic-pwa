@@ -12,14 +12,13 @@ const SheetMusic = () => {
   };
 
   const isLessonLocked = (lessonId: string) => {
-    // First verify if rhythm is completed
     if (!completedLessons.includes('rtest')) {
       return true;
     }
 
     switch (lessonId) {
       case 's1':
-        return false; // First lesson is always unlocked
+        return false;
       case 's2':
         return !isLessonCompleted('s1');
       case 's3':

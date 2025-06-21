@@ -30,12 +30,9 @@ const CreateAccount = () => {
       setError(null);
       
       await userService.createAccount(data);
-      console.log('Account created successfully');
       
-      // Redirect to login page
       navigate('/');
     } catch (error) {
-      console.error('Falha no cadastro:', error);
       setError(error instanceof Error ? error.message : 'Falha no cadastro');
     } finally {
       setIsLoading(false);

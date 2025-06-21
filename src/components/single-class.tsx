@@ -6,15 +6,12 @@ interface SingleClassProps {
   image: string;
   text: string;
   classPath: string;
-  moduleId?: string;
   isLocked?: boolean;
   onComplete?: () => void;
 }
 
-export const SingleClass = ({ image, text, classPath, moduleId, isLocked = false, onComplete }: SingleClassProps) => {
+export const SingleClass = ({ image, text, classPath, isLocked = false, onComplete }: SingleClassProps) => {
   const navigate = useNavigate();
-
-  console.log(moduleId);
 
   const handleClick = () => {
     if (!isLocked) {

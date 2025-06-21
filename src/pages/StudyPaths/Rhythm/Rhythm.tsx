@@ -12,14 +12,13 @@ const Rhythm = () => {
   };
 
   const isLessonLocked = (lessonId: string) => {
-    // First verify if ear training is completed
     if (!completedLessons.includes('etest')) {
       return true;
     }
 
     switch (lessonId) {
       case 'r1':
-        return false; // First lesson is always unlocked
+        return false;
       case 'r2':
         return !isLessonCompleted('r1');
       case 'r3':
