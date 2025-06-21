@@ -35,8 +35,8 @@ const CreateAccount = () => {
       // Redirect to login page
       navigate('/');
     } catch (error) {
-      console.error('Registration failed:', error);
-      setError(error instanceof Error ? error.message : 'Registration failed');
+      console.error('Falha no cadastro:', error);
+      setError(error instanceof Error ? error.message : 'Falha no cadastro');
     } finally {
       setIsLoading(false);
     }
@@ -54,7 +54,7 @@ const CreateAccount = () => {
       backgroundColor="#7203FF"
     >
       <VStack gap={8} width="100%" maxWidth="320px">
-        <Text color="white" fontWeight="bold" fontSize={40}>Create Account</Text>
+        <Text color="white" fontWeight="bold" fontSize={40}>Criar Conta</Text>
         
         <form onSubmit={onSubmit} style={{ width: '100%' }}>
           <VStack gap={4} width="full">
@@ -66,17 +66,17 @@ const CreateAccount = () => {
 
             <Field.Root required width="full">
               <Field.Label color="white">
-                Name <Field.RequiredIndicator />
+                Nome <Field.RequiredIndicator />
               </Field.Label>
               <Input 
                 variant="subtle" 
-                placeholder="Your name" 
+                placeholder="Seu nome" 
                 width="full"
                 {...register("name", { 
-                  required: "Name is required",
+                  required: "Nome é obrigatório",
                   minLength: {
                     value: 2,
-                    message: "Name must be at least 2 characters"
+                    message: "O nome deve ter pelo menos 2 caracteres"
                   }
                 })} 
               />
@@ -92,10 +92,10 @@ const CreateAccount = () => {
                 placeholder="email@email.com" 
                 width="full"
                 {...register("email", { 
-                  required: "Email is required",
+                  required: "E-mail é obrigatório",
                   pattern: {
                     value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                    message: "Invalid email address"
+                    message: "E-mail inválido"
                   }
                 })} 
               />
@@ -104,7 +104,7 @@ const CreateAccount = () => {
 
             <Field.Root required width="full">
               <Field.Label color="white">
-                Password <Field.RequiredIndicator />
+                Senha <Field.RequiredIndicator />
               </Field.Label>
               <Input 
                 variant="subtle" 
@@ -112,10 +112,10 @@ const CreateAccount = () => {
                 type="password" 
                 width="full"
                 {...register("password", { 
-                  required: "Password is required",
+                  required: "Senha é obrigatória",
                   minLength: {
                     value: 6,
-                    message: "Password must be at least 6 characters"
+                    message: "A senha deve ter pelo menos 6 caracteres"
                   }
                 })} 
               />
@@ -129,7 +129,7 @@ const CreateAccount = () => {
               width="full"
               disabled={isLoading}
             >
-              {isLoading ? 'Creating Account...' : 'Create Account'}
+              {isLoading ? 'Criando conta...' : 'Criar Conta'}
             </Button>
             
             <Button 
@@ -138,7 +138,7 @@ const CreateAccount = () => {
               width="full"
               onClick={() => navigate('/')}
             >
-              Back to Login
+              Voltar para o login
             </Button>
           </VStack>
         </form>

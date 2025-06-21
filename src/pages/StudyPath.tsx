@@ -10,6 +10,7 @@ import MusicPracticeImage from "@/assets/music-practice.jpg"
 import AIExerciseImage from "@/assets/ai-test.jpg"
 import { SingleClass } from "@/components/single-class";
 import { ClassSeparator } from "@/components/class-separator";
+import { SocialShare } from "@/components/social-share";
 import { Grid2x2, User, LogOut } from "lucide-react";
 import { OrientationWarning } from "@/components/orientation-warning";
 import { useEffect, useState } from "react";
@@ -255,6 +256,13 @@ const StudyPath = () => {
                   </Text>
                 ))}
               </Box>
+
+              <SocialShare
+                exerciseProgress={exerciseProgress}
+                moduleProgress={moduleProgress}
+                streak={streak}
+                userName={localStorage.getItem('user_name') || undefined}
+              />
 
               <Box paddingY="2rem">
                 <Button

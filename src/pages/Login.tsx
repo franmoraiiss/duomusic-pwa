@@ -1,9 +1,10 @@
-import { Box, Button, Field, Input, Text, VStack } from "@chakra-ui/react"
+import { Box, Button, Field, Input, Text, VStack, Image } from "@chakra-ui/react"
 import { Collapsible } from "@chakra-ui/react"
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { useAuth } from "../hooks/useAuth";
 import { useNavigate } from "react-router";
+import duomusicLogo from "../assets/duomusic-logo.png";
 
 interface FormValues {
   email: string
@@ -35,7 +36,15 @@ const Login = () => {
       backgroundColor="#7203FF"
     >
       <VStack gap={8} width="100%" maxWidth="320px">
-        <Text color="white" fontWeight="bold" fontSize={40}>DuoMusic</Text>
+        <Image 
+          src={duomusicLogo} 
+          alt="DuoMusic Logo" 
+          height="150px"
+          objectFit="contain"
+          borderRadius="full"
+          border="2px solid white"
+          marginBottom={20}  
+        />
         
         {/* Main no-login button */}
         <Button 
@@ -72,10 +81,10 @@ const Login = () => {
                       placeholder="email@email.com" 
                       width="full"
                       {...register("email", { 
-                        required: "Email is required",
+                        required: "E-mail é obrigatório",
                         pattern: {
                           value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                          message: "Invalid email address"
+                          message: "E-mail inválido"
                         }
                       })} 
                     />
@@ -92,10 +101,10 @@ const Login = () => {
                       type="password" 
                       width="full"
                       {...register("password", { 
-                        required: "Password is required",
+                        required: "Senha é obrigatória",
                         minLength: {
                           value: 6,
-                          message: "Password must be at least 6 characters"
+                          message: "A senha deve ter pelo menos 6 caracteres"
                         }
                       })} 
                     />
@@ -115,7 +124,7 @@ const Login = () => {
                     width="full"
                     disabled={isLoading}
                   >
-                    {isLoading ? 'Loading...' : 'Entrar'}
+                    {isLoading ? 'Carregando...' : 'Entrar'}
                   </Button>
                   
                   <Button 

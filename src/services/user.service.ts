@@ -20,7 +20,7 @@ export const userService = {
     });
 
     if (!response.ok) {
-      throw new Error('Registration failed');
+      throw new Error('Falha no cadastro');
     }
 
     return response.json();
