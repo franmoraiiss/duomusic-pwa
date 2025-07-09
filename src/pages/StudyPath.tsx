@@ -7,7 +7,7 @@ import PianoPlaygroundImage from "@/assets/piano-playground.jpg"
 import RhythmImage from "@/assets/rhythm.jpg"
 import SheetMusicImage from "@/assets/sheet-music.jpg"
 import MusicPracticeImage from "@/assets/music-practice.jpg"
-import AIExerciseImage from "@/assets/ai-test.jpg"
+// import AIExerciseImage from "@/assets/ai-test.jpg"
 import { SingleClass } from "@/components/single-class";
 import { ClassSeparator } from "@/components/class-separator";
 import { SocialShare } from "@/components/social-share";
@@ -163,14 +163,14 @@ const StudyPath = () => {
                 onComplete={() => handleLessonComplete('music-practice')}
               />
 
-              <Box marginTop="3rem">
+              {/* <Box marginTop="3rem">
                 <SingleClass
                   image={AIExerciseImage}
                   text="Exercite com IA"
                   classPath="/ai-exercise"
                   isLocked={false}
                 />
-              </Box>
+              </Box> */}
 
               <Box marginTop="3rem">
                 <SingleClass

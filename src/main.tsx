@@ -54,8 +54,8 @@ import { STest } from './pages/StudyPaths/SheetMusic/STest.tsx';
 import { MusicPractice } from './pages/StudyPaths/MusicPractice/MusicPractice.tsx';
 import { Twinkle } from './pages/StudyPaths/MusicPractice/Twinkle.tsx';
 import { ParabensVoce } from './pages/StudyPaths/MusicPractice/ParabensVoce.tsx';
-import { AIExercise } from './pages/StudyPaths/AIExercise/AIExercise.tsx';
-import { AITest } from './pages/StudyPaths/AIExercise/AITest.tsx';
+// import { AIExercise } from './pages/StudyPaths/AIExercise/AIExercise.tsx';
+// import { AITest } from './pages/StudyPaths/AIExercise/AITest.tsx';
 import { StrictMode } from 'react';
 
 createRoot(document.getElementById('root')!).render(
@@ -108,8 +108,8 @@ createRoot(document.getElementById('root')!).render(
           <Route path='/music-practice' element={<MusicPractice />} />
           <Route path='/music-practice/twinkle' element={<Twinkle />} />
           <Route path='/music-practice/song2' element={<ParabensVoce />} />
-          <Route path='/ai-exercise' element={<AIExercise />} />
-          <Route path='/ai-exercise/test/:topicId' element={<AITest />} />
+          {/* <Route path='/ai-exercise' element={<AIExercise />} />
+          <Route path='/ai-exercise/test/:topicId' element={<AITest />} /> */}
         </Routes>
       </BrowserRouter>
     </Provider>
